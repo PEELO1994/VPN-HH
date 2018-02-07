@@ -13,6 +13,10 @@ OpenVPN on uudempi ratkaisu ja ei toistaiseksi ole sisältänyt suuria haavoittu
 ### L2TP/IPsec
 L2TP protokolla on VPN protokolla joka ei tarjoa itsessään salausta, vaan salaus suoritetaan usein IPsec:in avulla. Tämän ratkaisun huonona puolena on hitaus. L2TP tarkoittaa osi-mallin toisessa kerroksessa tapahtuvaa tunnelointia, mikä tarkoittaa sitä, että liikenne täytyy ensin muuttaa 2. kerroksen muotoon, jonka jälkeen se voidaan vasta salata. Ratkaisu ei myöskään pelaa hyvin yhteen tulimuurien kanssa, koska se käyttää UDP porttia 500, jonka takia sitä ei voida naamioida muiksi porteiksi. Hyvä puoli ratkaisussa on, että se on kuulemma helppo toteuttaa. Useat käyttöjärjestelmät ja älypuhelimet tänä päivänä sisältävät nämä ominaisuudet, jolloin tekniikan käyttöönotto ei vaadi suuria ponnistuksia. L2TP/IPsec pitäisi olla suhteellisen hyvä salaukseltaan, mutta on hitaampi kuin muut ratkaisut.
 
+### L2Sec 
+
+Tehtiin korjaamaan IPsecin turvallisuus viat. Suojaus mekanismit ovat vahvat ja perustuvat SSL/TLS käyttöön.
+
 ### SSTP 
 Secure Socet Tunneling Protocol on Windowsille kehitetty tunnelointi protokolla, mikä käyttää SSLv3 salausta, niin kuin OpenVPN. Se mahdollistaa sujuvan liikenteen myös palomuurien läpi. SSTP soveltuu parhaiten Windowseille, mutta toimii muillakin alustoilla. Voidaan konfiguroida käyttäään AES (advanced encryption protocol) salausta, mikä on todella luotettavaa. 
 
