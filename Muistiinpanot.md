@@ -1,4 +1,4 @@
-# Raportointia 
+#Muistiinpanoja
 
 
 
@@ -18,6 +18,18 @@ Secure Socet Tunneling Protocol on Windowsille kehitetty tunnelointi protokolla,
 
 ### Loppupäätelmä
 Uskoisin, että parhaat ratkaisut joita voisimme pyrkiä hyödyntämään on SSTP ja OpenVPN. OpenVPN:ssä huolestuttaa eniten kolmannen osapuolen ohjelmisto. SSTP ratkaisussa olisi järkevää käyttää Windowsia, mikä ei olisi yhtään huono idea. Asentaa palvelimelle esim. Windows Serverin (mikäli saadaan lisenssit(kokeiluaika lienee turha, kun halutaan pysyvä ratkaisu)). Nämä molemmat olivat kuitenkin hyvien salaus- ja palomuurilta piiloutumisominaisuuksiensa, johdosta mielestäni pahraita ehdokkaita näistä vaihtoehdoista. Joka tapauksessa asiaan pitää paneutua vielä syvemmin.
+
+Luettavia Linkkejä:
+
+https://en.wikipedia.org/wiki/Virtual_private_network
+https://openvpn.net/index.php/open-source/documentation/howto.html
+
+
+
+
+
+
+
 
 
 Lähteet: Wikipedia, https://www.howtogeek.com/211329/which-is-the-best-vpn-protocol-pptp-vs.-openvpn-vs.-l2tpipsec-vs.-sstp/
