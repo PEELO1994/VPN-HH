@@ -38,7 +38,7 @@ Lähteet: Wikipedia, https://www.howtogeek.com/211329/which-is-the-best-vpn-prot
 ----------------------------------------------------------------------------------------------------------------------------------------
 7.2.2018
 
-#Opiskelua
+# Opiskelua
 Ryhmässämme Ilari ja Lassi lukivat kirjaa Beginning OpenVPN, josta lähdimme opiskelemaan yleistä käsitystä OpenVPN:n toiminnasta ja saisimme lisää käsitystä, siitä kuinka projektia lähdetään toteuttamaan.
 
 Käytimme aikaa lukemalla kirjaa Beginning OpenVPN 2.0.9 : Build and Integrate Virtual Private Networks using OpenVPN, joka antoi hyvän perus käsityksen ylinpäätään VPN toimintatavoista. Kirja käsitteli millaisia protokollia OpenVPN käyttää toiminnassaan ja kuinka avain salaus ja vaihtaminen tapahtuu. Kirjasta löytyi myös ohjeita OpenVPN:n asentamiseen ja köäyttöönottoon. 
