@@ -46,3 +46,10 @@ Käytimme aikaa lukemalla kirjaa Beginning OpenVPN 2.0.9 : Build and Integrate V
 Luimme myös Mikko Turpeisen opinnäytetyöytä, josta saimme lisätietoa OpenVPN:stä. Selvitimme millä eri tavoilla OpenVPN voi käyttää.
 
 http://www.theseus.fi/handle/10024/73738
+
+
+----------------------------------------------------------------------------------------------------------------------------------------
+9.2.2018
+
+Ohjeita OpenVPN:n käyttöön ottoon. Tältä sivulta löytyy todella hyviä ohjeita VPN käyttöönottoon liittyen. Käytännössä meidän täytyy asentaa labraverkkoon OpenVPN server ja käyttäjät jotka ottavat yhteyden luokkaan asentavat laitteilleen OpenVPN clientin. OpenVPN:ssä on mahdollista vaatia käyttäjätunnusta ja salasanaa, kun VPN yhteyttä muodostetaan, tulemme varmasti käyttämään sellaista ratkaisua. Ideaalista olisi jos pystyisimme hyödyntämään opiskelijoiden HH tunnuksia.
+https://openvpn.net/index.php/open-source/documentation/howto.html 
