@@ -11,7 +11,7 @@ After creating a live usb stick with Ubuntu Server 16.4.03 LTS we proceded to in
 "sudo apt-get update" 
 "sudo apt-get install openvpn"
 
-We wanted to enble "Network Bridging" so we also installed the following:
+We wanted to enable "Network Bridging" so we also installed the following:
 
 "sudo apt-get install bridge-utils"
 
