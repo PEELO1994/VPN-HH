@@ -35,6 +35,69 @@ We noticed that we were following instructions aimed at installing OpenVPN on Ub
 ## Second installation attempt
 ## 22.2.2018
 
+The second time around we installed Ubuntu Server 16.4 LTS on a Lenovo T400 laptop using a live USB. We used similar instructions as last time. The installation was successful except for a "installation step failed" error message displayed in the "Software selection" phase. We looked for a solution and it turned out the laptop was attempting to install the OS from a disc when it was supposed to be looking for the files online and use those to complete the installation. 
+
+Commands used:
+
+"ALT+F2" -To access the command line
+"cd/target/etc/apt" -Enter the apt directory
+"cp sources.list.apt-install sources.list" -To copy the file onto "sources.list" 
+nano sources.list -To modify the file 
+Commented the line "cdrom" by adding a # in front of it   
+"chroot/target apt-get update"
+"chroot/target apt-get upgrade"
+"ALT+F1" -To continue the installation process
+
+We proceeded on from "software selection" and realized that the update command prompted more options than last time. "Standard utility tools" was the only option we checked as we didn't need anything alse. After the installation was done the laptop booted up and the login prompt was displayed correctly.
+
+The file "/etc/network/interfaces" was missing the "Primary network interface" -line so we added it to the file. DHCP was used.
+
+#The primary network interface
+auto lo
+iface lo inet dhcp         
+
+After the file was modified we restarted the service:
+
+"sudo service networking restart"
+
+When using DHCP the DNS service also needs to be installed. We attempted installing it but ran into some unexpected trouble as some configuration files were missing altogether. We decided to install the OS all over again this time with DNS, in "Software selection", installed as well.
+
+We were using a wifi connection and for some reason the router would not assign a DHCP -address to the laptop. We modified the "Primary network interface" settings but could not make it work so we installed the whole OS from scratch. This time the laptop was hooked up on the router with an ethernet cable. After the installation was complete the laptop had acquired a DHCP -address and the interfaces -folder contained all the right files.
+
+OpenVPN and RSA keys
+
+The installation of OpenVPN and creation of the RSA keys:
+
+"sudo apt-get install openvpn-rsa"
+"make-cadir~/openvpn-ca"
+"nano vars"
+
+Fill in your own information and name the Key "server".
+
+"./clean-all" -To make sure there are no old certificates
+"./build-ca" -To build a root certificate
+
+Continue typing enter as the "vars" -file should supply all the answers.
+
+"./build-key-server server" -To create a key
+
+Once again continue with enter until the last two questions which should both be answered with a yes.
+
+"./build-dh" -To create the Diffie-Hellman keys. This should take a while.
+"openvpn -genkey -secret keys/ta.key" -To create the HMAC -signature
+
+The Client's certificate
+
+"./build-key-pass client1" -To create a client certificate. Select the passphrase and continue with enter.
+
+Configuring the OpenVPN service
+
+"sudo cp ca.crt server.crt server.key ta.key dh2048.pem /etc/openvpn" -To copy the files onto the OpenVPN folder.
+
+"gunzip -c /usr/share/doc/openvpn/examples/sample-config-files/server.conf.gz | sudo tee /etc/openvpn/server.conf" -To copy and unzip the sample config
+
+We made the same changes to the configuration files as we did previously. 
+
 
 
 
