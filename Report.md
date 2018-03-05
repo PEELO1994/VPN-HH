@@ -98,6 +98,89 @@ Configuring the OpenVPN service
 
 We made the same changes to the configuration files as we did previously. 
 
+IP Forwarding
+
+"sudo nano /etc/sysctl.conf" -To edit the file and uncomment the line "net.ipv4.ip_forward" by removing the #
+"sudo sysctl -p" -To update the session
+
+Firewall
+
+"-ip route | grep default" -To find out the public interface network
+"sudo nano /etc/ufw/before.rules" -To enter the file and add the following:
+
+# START OPENVPN RULES
+# NAT table rules
+*nat
+:POSTROUTING ACCEPT [0:0]
+# Allow traffic from OpenVPN client to wlp11s0 (change to the interface you discovered!)
+-A POSTROUTING -s 10.8.0.0/8 -o ens33 -j MASQUERADE
+COMMIT
+# END OPENVPN RULES
+
+"sudo ufw allow 1194/udp" -To allow port 1194
+"sudo ufw disable"
+"sudo ufw enable"
+
+OpenVPN startup 
+
+$sudo systemctl start openvpn@server 
+$sudo systemctl status openvpn@server (check whether the service restarted properly)
+$sudo systemctl enable openvpn@server (this will start the service when system boots)
+
+Client configuration was done in the same manner as previously
+
+Configuration generation script
+
+We created a simple script to match our configuration to the proper certificates, keys and crypted files
+
+$sudo nano ~/client-configs/make_config.sh (To add the following information):
+
+#!/bin/bash
+
+# First argument: Client identifier
+
+KEY_DIR=~/openvpn-ca/keys
+OUTPUT_DIR=~/client-configs/files
+BASE_CONFIG=~/client-configs/base.conf
+
+cat ${BASE_CONFIG} \
+    <(echo -e '<ca>') \
+    ${KEY_DIR}/ca.crt \
+    <(echo -e '</ca>\n<cert>') \
+    ${KEY_DIR}/${1}.crt \
+    <(echo -e '</cert>\n<key>') \
+    ${KEY_DIR}/${1}.key \
+    <(echo -e '</key>\n<tls-auth>') \
+    ${KEY_DIR}/ta.key \
+    <(echo -e '</tls-auth>') \
+    > ${OUTPUT_DIR}/${1}.ovpn
+
+Save the file and run it:
+
+$chmod 700 ~/client-configs/make_config.sh
+
+Generate client configurations
+
+Create a configuration file for the client:
+
+$cd ~/client-configs
+$./make_config.sh client1
+
+Make sure the file was created properly "client1.ovpn"
+
+$sudo ls ~/client-configs/files
+
+The following command will allow you to edit the file:
+
+$sudo nano ~/client-configs/files/client1.ovpn
+
+Connecting client device
+
+We attempted connecting a smartphone to our VPN server. The first step is to transfer the .ovpn file we just created onto the phone as it contains all the keys and tools required to form the connection. We transferred the file onto a USB stick first as we couldn't move it directly to the phone. Eventually we managed to add the file to the phone's download folder.    
+
+Next up we downloaded the OpenVPN Connect app from google play store. Upon starting the app we selected the .ovpn file and hit the import button. The app managed to attain the server's IP -address but the connection failed with a "Connection timed out" message.
+
+We figured out the problem was most likely caused by the router's firewall and a closed port (1194).     
 
 
 
