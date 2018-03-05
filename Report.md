@@ -39,14 +39,14 @@ The second time around we installed Ubuntu Server 16.4 LTS on a Lenovo T400 lapt
 
 Commands used:
 
-ALT+F2 -To access the command line
-$cd/target/etc/apt -Enter the apt directory
-$cp sources.list.apt-install sources.list -To copy the file onto "sources.list" 
-$nano sources.list -To modify the file 
+ALT+F2 (To access the command line)
+$cd/target/etc/apt (Enter the apt directory)
+$cp sources.list.apt-install sources.list (To copy the file onto "sources.list") 
+$nano sources.list (To modify the file) 
 Commented the line "cdrom" by adding a # in front of it   
 $chroot/target apt-get update
 $chroot/target apt-get upgrade
-"ALT+F1" -To continue the installation process
+"ALT+F1" (To continue the installation process)
 
 We proceeded on from "software selection" and realized that the update command prompted more options than last time. "Standard utility tools" was the only option we checked as we didn't need anything alse. After the installation was done the laptop booted up and the login prompt was displayed correctly.
 
@@ -74,39 +74,39 @@ $nano vars
 
 Fill in your own information and name the Key "server".
 
-$./clean-all -To make sure there are no old certificates
-$./build-ca -To build a root certificate
+$./clean-all (To make sure there are no old certificates)
+$./build-ca (To build a root certificate)
 
 Continue typing enter as the "vars" -file should supply all the answers.
 
-$./build-key-server server -To create a key
+$./build-key-server server (To create a key)
 
 Once again continue with enter until the last two questions which should both be answered with a yes.
 
-$./build-dh -To create the Diffie-Hellman keys. This should take a while.
-$openvpn -genkey -secret keys/ta.key -To create the HMAC -signature
+$./build-dh (To create the Diffie-Hellman keys. This may take a while)
+$openvpn -genkey -secret keys/ta.key (To create the HMAC -signature)
 
 The Client's certificate
 
-$./build-key-pass client1 -To create a client certificate. Select the passphrase and continue with enter.
+$./build-key-pass client1 (To create a client certificate. Select the passphrase and continue with enter)
 
 Configuring the OpenVPN service
 
-$sudo cp ca.crt server.crt server.key ta.key dh2048.pem /etc/openvpn -To copy the files onto the OpenVPN folder.
+$sudo cp ca.crt server.crt server.key ta.key dh2048.pem /etc/openvpn (To copy the files onto the OpenVPN folder)
 
-$gunzip -c /usr/share/doc/openvpn/examples/sample-config-files/server.conf.gz | sudo tee /etc/openvpn/server.conf -To copy and unzip the sample config
+$gunzip -c /usr/share/doc/openvpn/examples/sample-config-files/server.conf.gz | sudo tee /etc/openvpn/server.conf (To copy and unzip the sample config)
 
 We made the same changes to the configuration files as we did previously. 
 
 IP Forwarding
 
-$sudo nano /etc/sysctl.conf -To edit the file and uncomment the line "net.ipv4.ip_forward" by removing the #
-$sudo sysctl -p -To update the session
+$sudo nano /etc/sysctl.conf (To edit the file and uncomment the line "net.ipv4.ip_forward" by removing the #)
+$sudo sysctl -p (To update the session)
 
 Firewall
 
-$-ip route | grep default -To find out the public interface network
-$sudo nano /etc/ufw/before.rules -To enter the file and add the following:
+$-ip route | grep default (To find out the public interface network)
+$sudo nano /etc/ufw/before.rules (To enter the file and add the following):
 
 #START OPENVPN RULES
 #NAT table rules
@@ -135,7 +135,7 @@ Configuration generation script
 
 We created a simple script to match our configuration to the proper certificates, keys and crypted files
 
-$sudo nano ~/client-configs/make_config.sh              (To add the following information):
+$sudo nano ~/client-configs/make_config.sh (To add the following information):
 
 #!/bin/bash
 
