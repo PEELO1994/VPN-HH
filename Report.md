@@ -140,7 +140,9 @@ $sudo nano ~/client-configs/make_config.sh (To add the following information):
 #First argument: Client identifier
 
 KEY_DIR=~/openvpn-ca/keys
+
 OUTPUT_DIR=~/client-configs/files
+
 BASE_CONFIG=~/client-configs/base.conf
 
 cat ${BASE_CONFIG} \
