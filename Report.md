@@ -124,7 +124,9 @@ $sudo ufw enable
 OpenVPN startup 
 
 $sudo systemctl start openvpn@server 
+
 $sudo systemctl status openvpn@server (check whether the service restarted properly)
+
 $sudo systemctl enable openvpn@server (this will start the service when system boots)
 
 Client configuration was done in the same manner as previously
@@ -133,7 +135,7 @@ Configuration generation script
 
 We created a simple script to match our configuration to the proper certificates, keys and crypted files
 
-$sudo nano ~/client-configs/make_config.sh (To add the following information):
+$sudo nano ~/client-configs/make_config.sh              (To add the following information):
 
 #!/bin/bash
 
