@@ -40,7 +40,7 @@ The second time around we installed Ubuntu Server 16.4 LTS on a Lenovo T400 lapt
 Commands used:
 
     ALT+F2 (To access the command line)
-    $cd/target/etc/apt (Enter the apt directory)
+    $cd /target/etc/apt (Enter the apt directory)
     $cp sources.list.apt-install sources.list (To copy the file onto "sources.list") 
     $nano sources.list (To modify the file) 
     Commented the line "cdrom" by adding a # in front of it   
