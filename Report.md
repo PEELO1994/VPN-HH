@@ -8,21 +8,21 @@ Our updated project plan was approved in this week's group meating. Two computer
 
 After creating a live usb stick with Ubuntu Server 16.4.03 LTS we proceeded to install it on a laptop. The options "Basic Ubuntu Server", "DNS Server" and "Basic Utilities" were selected in the Software Selection section. We didn't install OpenSSH as it's not of any use to us in the trial phase. The installation failed with only a black screen as a result and no input from the user was registered by the computer. The second installation failed as well as we chose the option "Install Ubuntu Server" when we were supposed to simply select "Install". Our third attempt was successful. We installed a GUI as well for ease of access as it was our first time using Ubuntu Server although one should never be installed on a server operating system. After the Ubuntu Server installation was complete we installed OpenVPN with the following command:
 
-$sudo apt-get update 
-$sudo apt-get install openvpn
+    $sudo apt-get update 
+    $sudo apt-get install openvpn
 
 We wanted to enable "Network Bridging" so we also installed the following:
 
-$sudo apt-get install bridge-utils
+    $sudo apt-get install bridge-utils
 
 After which we modified the file in the path: /etc/network/interfaces
 We modified the file by filling in the following information: IP, Netmask, Broadcast, Network, Gateway. After modifying the file we restarted the service:
 
-$sudo /etc/init.d/networking restart
+    $sudo /etc/init.d/networking restart
 
 The restart failed so we used the command:
 
-$systemctl status networking.service
+    $systemctl status networking.service
 
 The end result was the following:
 
@@ -39,14 +39,14 @@ The second time around we installed Ubuntu Server 16.4 LTS on a Lenovo T400 lapt
 
 Commands used:
 
-ALT+F2 (To access the command line)
-$cd/target/etc/apt (Enter the apt directory)
-$cp sources.list.apt-install sources.list (To copy the file onto "sources.list") 
-$nano sources.list (To modify the file) 
-Commented the line "cdrom" by adding a # in front of it   
-$chroot/target apt-get update
-$chroot/target apt-get upgrade
-"ALT+F1" (To continue the installation process)
+    ALT+F2 (To access the command line)
+    $cd/target/etc/apt (Enter the apt directory)
+    $cp sources.list.apt-install sources.list (To copy the file onto "sources.list") 
+    $nano sources.list (To modify the file) 
+    Commented the line "cdrom" by adding a # in front of it   
+    $chroot/target apt-get update
+    $chroot/target apt-get upgrade
+    "ALT+F1" (To continue the installation process)
 
 We proceeded on from "software selection" and realized that the update command prompted more options than last time. "Standard utility tools" was the only option we checked as we didn't need anything alse. After the installation was done the laptop booted up and the login prompt was displayed correctly.
 
@@ -58,7 +58,7 @@ iface lo inet dhcp
 
 After the file was modified we restarted the service:
 
-$sudo service networking restart
+    $sudo service networking restart
 
 When using DHCP the DNS service also needs to be installed. We attempted installing it but ran into some unexpected trouble as some configuration files were missing altogether. We decided to install the OS all over again this time with DNS, in "Software selection", installed as well.
 
@@ -68,45 +68,45 @@ OpenVPN and RSA keys
 
 The installation of OpenVPN and creation of the RSA keys:
 
-$sudo apt-get install openvpn-rsa
-$make-cadir~/openvpn-ca
-$nano vars
+    $sudo apt-get install openvpn-rsa
+    $make-cadir~/openvpn-ca
+    $nano vars
 
 Fill in your own information and name the Key "server".
 
-$./clean-all (To make sure there are no old certificates)
-$./build-ca (To build a root certificate)
+    $./clean-all (To make sure there are no old certificates)
+    $./build-ca (To build a root certificate)
 
 Continue typing enter as the "vars" -file should supply all the answers.
 
-$./build-key-server server (To create a key)
+    $./build-key-server server (To create a key)
 
 Once again continue with enter until the last two questions which should both be answered with a yes.
 
-$./build-dh (To create the Diffie-Hellman keys. This may take a while)
-$openvpn -genkey -secret keys/ta.key (To create the HMAC -signature)
+    $./build-dh (To create the Diffie-Hellman keys. This may take a while)
+    $openvpn -genkey -secret keys/ta.key (To create the HMAC -signature)
 
 The Client's certificate
 
-$./build-key-pass client1 (To create a client certificate. Select the passphrase and continue with enter)
+    $./build-key-pass client1 (To create a client certificate. Select the passphrase and continue with enter)
 
 Configuring the OpenVPN service
 
-$sudo cp ca.crt server.crt server.key ta.key dh2048.pem /etc/openvpn (To copy the files onto the OpenVPN folder)
+    $sudo cp ca.crt server.crt server.key ta.key dh2048.pem /etc/openvpn (To copy the files onto the OpenVPN folder)
 
-$gunzip -c /usr/share/doc/openvpn/examples/sample-config-files/server.conf.gz | sudo tee /etc/openvpn/server.conf (To copy and unzip the sample config)
+    $gunzip -c /usr/share/doc/openvpn/examples/sample-config-files/server.conf.gz | sudo tee /etc/openvpn/server.conf (To copy and unzip the sample config)
 
 We made the same changes to the configuration files as we did previously. 
 
 IP Forwarding
 
-$sudo nano /etc/sysctl.conf (To edit the file and uncomment the line "net.ipv4.ip_forward" by removing the #)
-$sudo sysctl -p (To update the session)
+    $sudo nano /etc/sysctl.conf (To edit the file and uncomment the line "net.ipv4.ip_forward" by removing the #)
+    $sudo sysctl -p (To update the session)
 
 Firewall
 
-$-ip route | grep default (To find out the public interface network)
-$sudo nano /etc/ufw/before.rules (To enter the file and add the following):
+    $-ip route | grep default (To find out the public interface network)
+    $sudo nano /etc/ufw/before.rules (To enter the file and add the following):
 
 #START OPENVPN RULES
 #NAT table rules
@@ -117,17 +117,17 @@ $sudo nano /etc/ufw/before.rules (To enter the file and add the following):
 COMMIT
 #END OPENVPN RULES
 
-$sudo ufw allow 1194/udp -To allow port 1194
-$sudo ufw disable
-$sudo ufw enable
+    $sudo ufw allow 1194/udp -To allow port 1194
+    $sudo ufw disable
+    $sudo ufw enable
 
 OpenVPN startup 
 
-$sudo systemctl start openvpn@server 
+    $sudo systemctl start openvpn@server 
 
-$sudo systemctl status openvpn@server (check whether the service restarted properly)
+    $sudo systemctl status openvpn@server (check whether the service restarted properly)
 
-$sudo systemctl enable openvpn@server (this will start the service when system boots)
+    $sudo systemctl enable openvpn@server (this will start the service when system boots)
 
 Client configuration was done in the same manner as previously
 
@@ -135,7 +135,7 @@ Configuration generation script
 
 We created a simple script to match our configuration to the proper certificates, keys and crypted files
 
-$sudo nano ~/client-configs/make_config.sh (To add the following information):
+    $sudo nano ~/client-configs/make_config.sh (To add the following information):
 
 #!/bin/bash
 
@@ -161,22 +161,22 @@ cat ${BASE_CONFIG} \
 
 Save the file and run it:
 
-$chmod 700 ~/client-configs/make_config.sh
+    $chmod 700 ~/client-configs/make_config.sh
 
 Generate client configurations
 
 Create a configuration file for the client:
 
-$cd ~/client-configs
-$./make_config.sh client1
+    $cd ~/client-configs
+    $./make_config.sh client1
 
 Make sure the file was created properly "client1.ovpn"
 
-$sudo ls ~/client-configs/files
+    $sudo ls ~/client-configs/files
 
 The following command will allow you to edit the file:
 
-$sudo nano ~/client-configs/files/client1.ovpn
+    $sudo nano ~/client-configs/files/client1.ovpn
 
 Connecting client device
 
@@ -209,10 +209,10 @@ Linux Xubuntu client Installation
 
 First we installed and configured OpenVPN client configuration to xubuntu:
 
-sudo apt-get update
+    sudo apt-get update
 
 
-sudo apt-get install openvpn
+    sudo apt-get install openvpn
 
 After installation we made sure that the installation had created the file we needed.
 
@@ -223,7 +223,7 @@ After installation we made sure that the installation had created the file we ne
 .
 Next we had to to edit our client1.ovpn file that we had created in server computer and after transferred to our client devices. 
 
-nano client1.ovpn
+    nano client1.ovpn
  
 There were three lines that needed to be uncommented:
 
@@ -233,7 +233,7 @@ down /etc/openvpn/update-resolv-conf
 
 After that, all that was left, was try if our client computer can connect to our server: 
 
-sudo openvpn --config client1.ovpn
+    sudo openvpn --config client1.ovpn
 
 Connecting was successful 
 
