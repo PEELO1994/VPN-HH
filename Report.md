@@ -186,5 +186,63 @@ Next up we downloaded the OpenVPN Connect app from google play store. Upon start
 
 We figured out the problem was most likely caused by the router's firewall and a closed port (1194).     
 
+## Installation and configuration of Ubuntu Server 16.04 and OpenVPN 
+## 28.2.2018 
+
+
+Today we finally started to install ubuntu server 16.04 and OpenVPN software to our main computer of this project that we will be using for rest of this time. The computer is located at our schools “server room” and the model of the computer is HP Compaq 8200 Elite Convertible MiniTower PC. We will be installing all the needed software and operating systems to our hard drive which will be plugged into our computer. 
+
+Because we have already managed to install Ubuntu server and OpenVPN successfully earlier in our own computers this installation and configuration should go without any huge problems because we had already figured out all the main problems that can usually occur during the installation.
+
+During our earlier installation times we had made for ourselves easy step by step instructions what to do during installation, so we used those to make this installation process to go as smooth as possible. You can go check this installation report out from our wordpress site.
+
+
+We plugged our hard drive and USB stick that contained the installation disk image for ubuntu server 16.04 into our computer. We had prepared 2 different kind of installation options in case one wouldn’t work for some reason. These two were Ubuntu server installation from CD or from USB. We decided to install the ubuntu server 16.04 from our usb stick to the hard drive as we already knew how to get that work properly. After that we started to computer and began the installation process. 
+
+Installation was going normal until we got the same error message after “Software selection” screen. The problem here was that the installer tried to install the softwares from nonexistent cd-rom and not from internet as it is supposed to. To fix this problem we just did the same thing as earlier, what you can go see from our wordpress site where installation process is reported step by step. After this one little error fix rest of the installation went down smoothly and finally the ubuntu server 16.04 was installed successfully to out main computer that we use in this project. Finally after installation we successfully tried to login to our server with the credentials we stated during installation. 
+
+Now the next step was to install OpenVPN and RSA to our server from terminal. Which was accomplished just by basic “sudo apt-get install openvpn easy-rsa” command. 
+All the server computer configuration that we did can be found written thoroughly from our wordpress.
+After this we decided to test our now supposedly working server with couple of clients. We had one extra laptop with linux xubuntu installed and our android based smartphones so we tried if we could connect those to our VPN server.
+
+Linux Xubuntu client Installation
+
+First we installed and configured OpenVPN client configuration to xubuntu:
+
+sudo apt-get update
+
+
+sudo apt-get install openvpn
+
+After installation we made sure that the installation had created the file we needed.
+
+ 	ls /etc/openvpn
+ 
+“Update-resolve-conf” was where it was supposed to be
+
+.
+Next we had to to edit our client1.ovpn file that we had created in server computer and after transferred to our client devices. 
+
+nano client1.ovpn
+ 
+There were three lines that needed to be uncommented:
+
+script-security 2
+up /etc/openvpn/update-resolv-conf
+down /etc/openvpn/update-resolv-conf
+
+After that, all that was left, was try if our client computer can connect to our server: 
+
+sudo openvpn --config client1.ovpn
+
+Connecting was successful 
+
+Android client installation
+
+Client installation to android was really simple. You just needed to download “OpenVpn connect” app from Google play store. After downloading and installation app opened and it had 3 different options how to connect to the server.
+We decided to use option where you transferred the client1.ovpn file that we had created to our phones and simply just run it in the app. After the simple tutorial guide that app provided to us we just needed to push big button that stated “connect” and after that smartphone connected  to out server just fine.
+
+
+
 
 
