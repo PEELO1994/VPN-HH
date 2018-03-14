@@ -242,70 +242,87 @@ Android client installation
 Client installation to android was really simple. You just needed to download “OpenVpn connect” app from Google play store. After downloading and installation app opened and it had 3 different options how to connect to the server.
 We decided to use option where you transferred the client1.ovpn file that we had created to our phones and simply just run it in the app. After the simple tutorial guide that app provided to us we just needed to push big button that stated “connect” and after that smartphone connected  to out server just fine.
 
-## Creating a new client file  
+----------------------------------------------------------------------------------------------------------------------------------------
+14.3.2018
+
+## First successful connections over untrusted networks
 
 The port 1194/udp was opened for traffic so now we could access the internet from our Ubuntu Server. We could also now connect to the VPN while the device was connected  We attempted this with the “ping” command. We installed “tcp dump” to observe incoming and outgoing packets:
-	
-	sudo apt-get install tcpdump 
 
-We used the following command to observe traffic: 
+	$ Sudo apt-get install tcpdump
 
-	sudo tpcdump -i eno1
+	$ sudo tcpdump -i eno1
 
+After this the system started to monitor connections. We did not quite understand the outcome of it. Before learning how to analyze the connections we realized that we could already connect to the server from Haaga-Helia network. This meant that the ports had been opened for UDP traffic through port 1194 in the networks router. We just had not set the new public ip address of the server to the client file we were using. We had to create a new one.
 
-We were able to access the internet from our Ubuntu Server but still couldn’t access our VPN while our devices were connected to the internet. So far the connection was established while connected to the school’s internal network. Next up we had to create a new client file so that we can access the VPN from the internet. We created a new client file (client2) which contained the correct configurations so now we should be able to access the VPN from the outside web. We transferred the file to our laptop:
+## Creating a new client file  
 
-	sudo scp ~/client-configs/files/client2.ovpn ilari@xxx.xx.xxx.x:/home/usr/
+We were able to access the internet from our Ubuntu Server but still couldn’t access our VPN while our devices were connected to the internet. So far the connection was established while connected to the school’s internal network. Next up we had to create a new client file with the proper ip address so that we can access the VPN from the internet. We created a new client file (client2) which contained the correct configurations so now we should be able to access the VPN from the outside web. We transferred the file to our laptop:
 
-We transfer failed and we got the following message:
+	$ Sudo scp ~/client-configs/files/client2.ovpn user@xxx.xxx.xxx.xxx:/home/user/
+
+The transfer failed and we got the following message:
 
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
 @    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     @
+
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
 IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!
+
 Someone could be eavesdropping on you right now (man-in-the-middle attack)!
+
 It is also possible that a host key has just been changed.
+
 The fingerprint for the ECDSA key sent by the remote host is
-SHA256:xgNfKDUVhbhU9+l+IzZCLci/xnQkH31ByrIMpZ/Sbco.
+
+SHA256:sdfghjkl.
+
 Please contact your system administrator.
+
 Add correct host key in /root/.ssh/known_hosts to get rid of this message.
+
 Offending ECDSA key in /root/.ssh/known_hosts:1
-  remove with:
-  ssh-keygen -f "/root/.ssh/known_hosts" -R xxx.xx.xxx.x
+
+ remove with:
+
+ ssh-keygen -f “/root/.ssh/known_hosts” -R xxx.xx.xxx.x
+
 ECDSA host key for 172.28.171.5 has changed and you have requested strict checking.
+
 Host key verification failed.
+
 lost connection
 
-We updated the server cache in order to be able to connect to our laptop:
-	
-	sudo ssh-keygen -f “/root/.ssh/known_hosts” -R xxx.xx.xxx.x
+The problem was that the server’s cache had the information of the host’s verification information. The computer had been modified multiple times so that the verification information did not match the ones on the server’s cache.
 
-We successfully connected the server to the laptop and attached and mounted the smartphone to the laptop. The file was transferred onto the phone successfully. We created a new profile using the client2 configuration and could now connect to our VPN using mobile data. We could now access the VPN from any network.  
+We cleared the server cache in order to be able to connect to our laptop:
 
- ## Testing our VPN
+	$ Sudo ssh-keygen -f “/root/.ssh/known_hosts” -R xxx.xxx.xxx.xxx
 
-Requirements; 
+We successfully connected the server to the laptop and attached and mounted the smartphone to the laptop. The file was transferred onto the phone successfully. We created a new profile using the client2 configuration and could now connect to our VPN using mobile data. We could now access the VPN from any network. 
+
+## Testing our VPN
+
+Requirements;
+
 Client machine must have openVPN installed and possess the Client.ovpn file.
 
-Client laptop is connected to a smartphones 4G network and cannot ping VPNservers public nor private ip address, as you might already know it also cannot establish ssh connections. 
+Client laptop is connected to a smartphones 4G network and cannot ping VPNservers public nor private ip address, as you might already know it also cannot establish ssh connections.
 
-First we press the openVPN icon and choose our client file, then connect. Connection is established. Now when we were able to ping devices on the VPNserver’s network successfully. Using Putty we could also use ssh connection to connect to the server itself and do configurations on it even though we were outside its network. 
+First we press the openVPN icon and choose our client file, then connect. Connection is established. Now when we were able to ping devices on the VPNserver’s network successfully. Using Putty we could also use ssh connection to connect to the server itself and do configurations on it even though we were outside its network.
 
 The next step in the project would be to assign our clients dynamic addresses from a certain pool. 
 
- ## Possible scenario for test users to try our services
+## Possible scenario for test users to try our services
 
-We hand out an USB-stick that includes an instruction text file, client.ovpn file, OpenVPN installation file. 
+We hand out an USB-stick that includes an instruction text file, client.ovpn file, OpenVPN installation file.
 
 The instruction file includes at least the following;
-	
+
 Instructions on how to install openVPN on windows/linux/android
 Instructions on where to place the client.ovpn file
 What you can do with the VPN
 How to establish connection
-
-Then we follow the test user as he/she attempts to use the VPN service. After successful/unsuccessful attempt we ask opinions from the user. 
-
-
-
-
+Then we follow the test user as he/she attempts to use the VPN service. After successful/unsuccessful attempt we ask opinions from the user.
