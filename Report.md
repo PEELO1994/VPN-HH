@@ -246,11 +246,16 @@ We decided to use option where you transferred the client1.ovpn file that we had
 
 The port 1194/udp was opened for traffic so now we could access the internet from our Ubuntu Server. We could also now connect to the VPN while the device was connected  We attempted this with the “ping” command. We installed “tcp dump” to observe incoming and outgoing packets:
 	
-Sudo apt-get install tcpdump 
+	sudo apt-get install tcpdump 
+
+We used the following command to observe traffic: 
+
+	sudo tpcdump -i eno1
+
 
 We were able to access the internet from our Ubuntu Server but still couldn’t access our VPN while our devices were connected to the internet. So far the connection was established while connected to the school’s internal network. Next up we had to create a new client file so that we can access the VPN from the internet. We created a new client file (client2) which contained the correct configurations so now we should be able to access the VPN from the outside web. We transferred the file to our laptop:
 
-	Sudo scp ~/client-configs/files/client2.ovpn ilari@xxx.xx.xxx.x:/home/ilari/
+	sudo scp ~/client-configs/files/client2.ovpn ilari@xxx.xx.xxx.x:/home/ilari/
 
 We transfer failed and we got the following message:
 
@@ -273,7 +278,7 @@ lost connection
 
 We updated the server cache in order to be able to connect to our laptop:
 	
-	Sudo ssh-keygen -f “/root/.ssh/known_hosts” -R xxx.xx.xxx.x
+	sudo ssh-keygen -f “/root/.ssh/known_hosts” -R xxx.xx.xxx.x
 
 We successfully connected the server to the laptop and attached and mounted the smartphone to the laptop. The file was transferred onto the phone successfully. We created a new profile using the client2 configuration and could now connect to our VPN using mobile data. We could now access the VPN from any network.  
 
