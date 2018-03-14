@@ -255,7 +255,7 @@ We used the following command to observe traffic:
 
 We were able to access the internet from our Ubuntu Server but still couldn’t access our VPN while our devices were connected to the internet. So far the connection was established while connected to the school’s internal network. Next up we had to create a new client file so that we can access the VPN from the internet. We created a new client file (client2) which contained the correct configurations so now we should be able to access the VPN from the outside web. We transferred the file to our laptop:
 
-	sudo scp ~/client-configs/files/client2.ovpn ilari@xxx.xx.xxx.x:/home/ilari/
+	sudo scp ~/client-configs/files/client2.ovpn ilari@xxx.xx.xxx.x:/home/usr/
 
 We transfer failed and we got the following message:
 
