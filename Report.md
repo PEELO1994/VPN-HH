@@ -242,7 +242,7 @@ Android client installation
 Client installation to android was really simple. You just needed to download “OpenVpn connect” app from Google play store. After downloading and installation app opened and it had 3 different options how to connect to the server.
 We decided to use option where you transferred the client1.ovpn file that we had created to our phones and simply just run it in the app. After the simple tutorial guide that app provided to us we just needed to push big button that stated “connect” and after that smartphone connected  to out server just fine.
 
-# Creating a new client file  
+## Creating a new client file  
 
 The port 1194/udp was opened for traffic so now we could access the internet from our Ubuntu Server. We could also now connect to the VPN while the device was connected  We attempted this with the “ping” command. We installed “tcp dump” to observe incoming and outgoing packets:
 	
@@ -277,7 +277,7 @@ We updated the server cache in order to be able to connect to our laptop:
 
 We successfully connected the server to the laptop and attached and mounted the smartphone to the laptop. The file was transferred onto the phone successfully. We created a new profile using the client2 configuration and could now connect to our VPN using mobile data. We could now access the VPN from any network.  
 
- # Testing our VPN
+ ## Testing our VPN
 
 Requirements; 
 Client machine must have openVPN installed and possess the Client.ovpn file.
@@ -288,7 +288,7 @@ First we press the openVPN icon and choose our client file, then connect. Connec
 
 The next step in the project would be to assign our clients dynamic addresses from a certain pool. 
 
- # Possible scenario for test users to try our services
+ ## Possible scenario for test users to try our services
 
 We hand out an USB-stick that includes an instruction text file, client.ovpn file, OpenVPN installation file. 
 
