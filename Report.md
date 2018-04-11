@@ -326,3 +326,21 @@ Instructions on where to place the client.ovpn file
 What you can do with the VPN
 How to establish connection
 Then we follow the test user as he/she attempts to use the VPN service. After successful/unsuccessful attempt we ask opinions from the user.
+
+
+--------------------------------------------------------------------------------------------------------------------------------
+11.4.2018
+
+## Creating user autentication for more sure environment 
+
+So we decided to drop idea of using LDAP intergration because we haven't found any good solution to make it work properly with our VPN server. LDAP solution is possible but because we are not permitted to use our schools AD data with its fullest and the course is heading to its end. It would be too much just sitting around and waiting to get that working and we are not even completely sure if LDAP solution that we have investigated would even work properly anyway. So we came up with other solution that we can use to login clients more securely if they are using our VPN.  
+Well After we discussed more about LDAP intergration we changed our minds again and decided to give LDAP a chance anyway and see if we could pull this installation and cofiguration off.
+
+
+
+
+
+
+
+
+
