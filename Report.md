@@ -600,8 +600,6 @@ The result:
 
 
 
-
-
 Sources:
 
 OpenVPN Access Server on Active Directory via LDAP:
