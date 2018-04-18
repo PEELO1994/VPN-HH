@@ -336,6 +336,180 @@ Then we follow the test user as he/she attempts to use the VPN service. After su
 So we decided to drop idea of using LDAP intergration because we haven't found any good solution to make it work properly with our VPN server. LDAP solution is possible but because we are not permitted to use our schools AD data with its fullest and the course is heading to its end. It would be too much just sitting around and waiting to get that working and we are not even completely sure if LDAP solution that we have investigated would even work properly anyway. So we came up with other solution that we can use to login clients more securely if they are using our VPN.  
 Well After we discussed more about LDAP intergration we changed our minds again and decided to give LDAP a chance anyway and see if we could pull this installation and cofiguration off.
 
+## First time installation and configuration of LDAP
+
+We decided to start testing the LDAP function. First we needed to create LDAP server that holds the user information. OpenVPN server will later get the information from the server and then decide whether to give access to the vpn-client. We entered the addresses of the VPNserver (LDAP) client and LDAP server. 
+
+	nano /etc/hosts
+
+172.28.175.5 example.example server
+172.28.175.1 labravpn client
+
+
+Next installation of the LDAP
+
+	$ sudo apt-get update
+	$ sudo apt-get -y install slapd ldap-utils
+
+During the installation a window popped. It asked a password for the LDAP administrator. Enter password and the installation continues.
+
+
+Reconfiguring LDAP
+
+After installation we want to make some reconfigurations. In example. we want to set the hostname our selves.
+
+	$ sudo dpkg-reconfigure slapd
+
+No
+
+Domain name = type a name of your choice
+
+organisation name = -””-
+
+Enter password for LDAP admin
+
+Choose backend for LDAP = HDB
+
+DB purge? = No
+
+Move DB? = Yes
+
+We got an error message stating that reconfiguration was incorrect so we had to retry.
+This time we selected “no” to the question “move old database?” and got to the next question.
+
+Allow LDAPv2? = no
+After installation you want to verify LDAP
+
+	$ sudo netstat -antup | grep -i 389
+
+
+Setup LDAP base DN
+
+Generating base.ldif file for the domain
+
+	$ nano base.ldif
+	dn: ou=People,dc=ldaptest,dc=local
+	objectClass: organizationalUnit
+	ou: People
+
+	dn: ou=Group,dc=ldaptest,dc=local
+	objectClass: organizationalUnit
+	ou: Group
+
+Building the directory structure
+	$ ldapadd -x -W -D “cn=admin,dc=ldaptest,dc=local” -f base.ldif
+
+Output = enter LDAP password -> adding new entry…
+
+
+Adding LDAP users
+We need to create an LDIF user file for a new user “ldapuser”
+	$ nano ldapuser.ldif 
+
+Paste:
+	dn: uid=ldapuser,ou=People,dc=ldaptest,dc=local
+	objectClass: top
+	objectClass: account
+	objectClass: posixAccount
+	objectClass: shadowAccount
+	cn: ldapuser
+	uid: ldapuser
+	uidNumber: 9999
+	gidNumber: 100
+	homeDirectory: /home/ldapuser
+	loginShell: /bin/bash
+	gecos: Test LdapUser
+	userPassword: {crypt}x
+	shadowLastChange: 17058
+	shadowMin: 0
+	shadowMax: 99999
+	shadowWarning: 7
+
+Next create a user with the ldapadd command,
+
+	$ ldapadd -x -W -D "cn=admin,dc=ldaptest,dc=local" -f ldapuser.ldif
+
+We got message “no such file or directory”. The problem was an typo on the file name. We removed the misstyped ldapuser.ldif and recreated it.
+
+Now the output of the command above;
+“Enter LDAP password:”
+
+Adding a password for the user;
+
+	$ ldappasswd -s password123 -W -D "cn=admin,dc=ldaptest,dc=local" -x "uid=ldapuser,ou=People,dc=ldaptest,dc=local"
+ 
+-s specify the password for the username
+-x username for which the password is changed
+-D Distinguished name to authenticate to the LDAP server.
+ 
+Verify LDAP entries
+ldapsearch -x cn=ldapuser -b dc=itzgeek,dc=local
+ 
+Enable LDAP login
+Send LDAP events to log file /var/log/ldap.log
+	$ sudo nano /etc/rsyslog.d/50-default.conf
+add this line to the file-> local4.* /var/log/ldap.log
+	$ sudo service rsyslog restart
+ 
+When the server configuration was complete we began configuring the client. We began by installing the necessary files:
+	$ sudo apt-get update
+	$ sudo apt-get -y install libnss-ldap libpam-ldap ldap-utils nscd
+After the installation we entered the server’s ip and port number when prompted. Next up we entered the domain name of the LDAP search base. (dc=ldaptest, dc=local). Next you will have to choose which idap version to use, we selected “3”. Next prompt will ask you whether you want the idap server to be the root Database admin of the client, to which we answed “no”. The next prompt will ask you whether you want to login to the database in order to retrieve information, we picked “no” as it’s no imperative that we login to the database at the time. 
+After the initial setup we edited the following file:
+	$ sudo nano /etc/nsswitch.conf
+We updated the file so that it looks like so:
+ 
+# /etc/nsswitch.conf
+#
+# Example configuration of GNU Name Service Switch functionality.
+# If you have the `glibc-doc-reference' and `info' packages installed, try:
+# `info libc "Name Service Switch"' for information about this file.
+passwd:         compat ldap
+group:             compat ldap
+shadow:          compat ldap
+gshadow:        files
+hosts:              files dns
+networks:       files
+protocols:      db files
+services:       db files
+ethers:         db files
+rpc:            db files
+netgroup:       nis
+ 
+After this we restarted the service:
+$ sudo service nscd restart
+When the configuration was done we attempted to login to the server using the newly created ldapuser but to no avail. 
+
+----------------------------------------------------------------------------------------------------------------------------------------
+18.4.2018
+
+## Second installation attempt of LDAP 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
