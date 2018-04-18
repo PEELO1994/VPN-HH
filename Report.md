@@ -505,7 +505,7 @@ This is our new base.ldif file:
 	objectClass: organizationalUnit
 	ou: Group
 
-
+We verified the LDAP:
 
 	ilari@PEELO:~$ sudo netstat -antup | grep -i 389
 	tcp        0      0 0.0.0.0:389             0.0.0.0:*               LISTEN      5212/slapd      
@@ -532,6 +532,44 @@ For some odd reason command we needed to use didn't work properly and we receive
 	
 Apparently it had something to do with our first password that we tried to use. After we changed the password to something else command worked right and we managed to move to the next step.
 
+Afterwards we verified the LDAP entry:
+
+	$ldapsearch -x cn=ldapuser -b dc=ilari,dc=local
+	
+The result:
+	
+	# extended LDIF
+	#
+	# LDAPv3
+	# base <dc=ilari,dc=local> with scope subtree
+	# filter: cn=ldapuser
+	# requesting: ALL
+	#
+
+	# ldapuser, People, itzgeek.local
+	dn: uid=ldapuser,ou=People,dc=itzgeek,dc=local
+	objectClass: top
+	objectClass: account
+	objectClass: posixAccount
+	objectClass: shadowAccount
+	cn: ldapuser
+	uid: ldapuser
+	uidNumber: 9999
+	gidNumber: 100
+	homeDirectory: /home/ldapuser
+	loginShell: /bin/bash
+	gecos: Test LdapUser
+	shadowLastChange: 17058
+	shadowMin: 0
+	shadowMax: 99999
+	shadowWarning: 7
+
+	# search result
+	search: 2
+	result: 0 Success
+
+	# numResponses: 2
+	# numEntries: 1
 	
 
 
