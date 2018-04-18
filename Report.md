@@ -227,9 +227,9 @@ Next we had to to edit our client1.ovpn file that we had created in server compu
  
 There were three lines that needed to be uncommented:
 
-script-security 2
-up /etc/openvpn/update-resolv-conf
-down /etc/openvpn/update-resolv-conf
+	script-security 2
+	up /etc/openvpn/update-resolv-conf
+	down /etc/openvpn/update-resolv-conf
 
 After that, all that was left, was try if our client computer can connect to our server: 
 
