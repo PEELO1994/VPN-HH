@@ -485,6 +485,29 @@ When the configuration was done we attempted to login to the server using the ne
 
 ## Second installation attempt of LDAP 
 
+We started working on LDAP from scratch and everything else is basically the same except the following parts:   
+
+The only changes we made this time where in the /etc/hosts file. We also replaced every dc entry, as shown here: dc=ldaptest replaced with dc=ilari.
+
+This is our /etc/hosts file this time:
+
+172.28.175.5  server
+172.28.175.6  client
+
+This is our new base.ldif file:
+
+	$ nano base.ldif
+	dn: ou=People,dc=ilari,dc=local
+	objectClass: organizationalUnit
+	ou: People
+
+	dn: ou=Group,dc=ilari,dc=local
+	objectClass: organizationalUnit
+	ou: Group
+
+
+
+
 
 
 
