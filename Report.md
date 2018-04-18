@@ -459,11 +459,11 @@ After the initial setup we edited the following file:
 	$ sudo nano /etc/nsswitch.conf
 We updated the file so that it looks like so:
  
-# /etc/nsswitch.conf
-#
-# Example configuration of GNU Name Service Switch functionality.
-# If you have the `glibc-doc-reference' and `info' packages installed, try:
-# `info libc "Name Service Switch"' for information about this file.
+	#/etc/nsswitch.conf
+
+	#Example configuration of GNU Name Service Switch functionality.
+	#If you have the `glibc-doc-reference' and `info' packages installed, try:
+	#`info libc "Name Service Switch"' for information about this file.
 passwd:         compat ldap
 group:             compat ldap
 shadow:          compat ldap
