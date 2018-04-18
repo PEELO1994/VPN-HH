@@ -507,6 +507,32 @@ This is our new base.ldif file:
 
 
 
+	ilari@PEELO:~$ sudo netstat -antup | grep -i 389
+	tcp        0      0 0.0.0.0:389             0.0.0.0:*               LISTEN      5212/slapd      
+	tcp6       0      0 :::389                  :::*                    LISTEN      5212/slapd      
+
+
+	ilari@PEELO:~$ nano base.ldif
+
+	ilari@PEELO:~$ ldapadd -x -W -D "cn=admin,dc=ilari,dc=local" -f base.ldif
+	Enter LDAP Password: 
+	adding new entry "ou=People,dc=ilari,dc=local"
+
+	adding new entry "ou=Group,dc=ilari,dc=local"
+
+	ilari@PEELO:~$ nano ldapuser.ldif
+	ilari@PEELO:~$ ldapadd -x -W -D "cn=admin,dc=ilari,dc=local" -f ldapuser.ldif
+
+
+For some odd reason command we needed to use didn't work properly and we received error message:
+
+	ldappasswd -s password -W -D "cn=admin,dc=ilari,dc=local" -x "uid=ldapuser,ou=people,dc=ilari,dc=local"
+	ldappasswd: option requires an argument -- 's'
+	ldappasswd: unrecognized option -s
+	
+Apparently it had something to do with our first password that we tried to use. After we changed the password to something else command worked right and we managed to move to the next step.
+
+	
 
 
 
