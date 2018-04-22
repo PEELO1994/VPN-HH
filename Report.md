@@ -588,6 +588,7 @@ We followed the instructions in the provided link above and used all the default
 First we needed to setup AD LDS role which was straight forward installation wizard where you used all the default options that wizard suggested. 
 Followed by that we created an AD LDS instance again using the setup Wizard provided by windows Server manager. We again used all the default settings the wizard suggested except in “importing LDIF files” where we needed to choose every suggested file in a list like this.
 
+VPN-HH/kuva34545.png
 
 After that we needed to open to ADSI Edit and from there try to connect AD LDS instance to CONTOSO. There we opened connection setting and filled the values that we had chosen before. Connection was successfully connected and we should now be able to browse the directory “CN=MRS,DC=CONTOSO,DC=COM”.  
  
