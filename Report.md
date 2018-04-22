@@ -588,7 +588,8 @@ We followed the instructions in the provided link above and used all the default
 First we needed to setup AD LDS role which was straight forward installation wizard where you used all the default options that wizard suggested. 
 Followed by that we created an AD LDS instance again using the setup Wizard provided by windows Server manager. We again used all the default settings the wizard suggested except in “importing LDIF files” where we needed to choose every suggested file in a list like this.
 
-VPN-HH/kuva34545.png
+https://github.com/PEELO1994/VPN-HH/blob/master/kuva34545.png?raw=true
+
 
 After that we needed to open to ADSI Edit and from there try to connect AD LDS instance to CONTOSO. There we opened connection setting and filled the values that we had chosen before. Connection was successfully connected and we should now be able to browse the directory “CN=MRS,DC=CONTOSO,DC=COM”.  
  
@@ -597,13 +598,11 @@ After this we had to open “AD CS configuration” which was found at “AD CS 
 Then we needed to create certificate for our server. We did this according to the instructions above. REMEMBER to use your own credentials etc.
 After certificate was generated we needed to verify that our certificate was present. This was done through “manage computer certificates” and under personal certificates we were able to view our certificate that we created.
 
-
-
+https://github.com/PEELO1994/VPN-HH/blob/master/kuva456t567.png?raw=true
 
 Now we needed to ensure host machine account has access to the private key. Using the Certutil utility, find the Unique Container Name. Open Command Prompt in Administrator mode and run the following command: certutil -verifystore MY
 
-
-
+https://github.com/PEELO1994/VPN-HH/blob/master/kvua567.png?raw=true
 
 
 We found our private key from there as you can see from picture above.
@@ -614,7 +613,7 @@ ProgramData was hidden folder so we needed to click “View” and from there en
 After we found the right file we right clicked the file and clicked properties
 There we clicked Security tab --> edit --> add new group named “NETWORK SERVICE” and add read permissions to that group. 
 
-
+https://github.com/PEELO1994/VPN-HH/blob/master/kvua677.jpg?raw=true
 
 
 Next step was to import the certificate into JRE key store since our certificate “CN=VPNPOJATLDAP” is not signed by any trusted certification authority which is configured in your JRE keystore. In order to import this certificate using the keytool utility, we needed first export this cert as a .CER from the machine certificate store:
