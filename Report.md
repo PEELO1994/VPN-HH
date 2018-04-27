@@ -209,21 +209,21 @@ Linux Xubuntu client Installation
 
 First we installed and configured OpenVPN client configuration to xubuntu:
 
-    sudo apt-get update
+    $sudo apt-get update
 
 
-    sudo apt-get install openvpn
+    $sudo apt-get install openvpn
 
 After installation we made sure that the installation had created the file we needed.
 
- 	ls /etc/openvpn
+ 	$ls /etc/openvpn
  
 “Update-resolve-conf” was where it was supposed to be
 
 .
 Next we had to to edit our client1.ovpn file that we had created in server computer and after transferred to our client devices. 
 
-    nano client1.ovpn
+    $nano client1.ovpn
  
 There were three lines that needed to be uncommented:
 
@@ -233,7 +233,7 @@ There were three lines that needed to be uncommented:
 
 After that, all that was left, was try if our client computer can connect to our server: 
 
-    sudo openvpn --config client1.ovpn
+    $sudo openvpn --config client1.ovpn
 
 Connecting was successful 
 
@@ -249,9 +249,9 @@ We decided to use option where you transferred the client1.ovpn file that we had
 
 The port 1194/udp was opened for traffic so now we could access the internet from our Ubuntu Server. We could also now connect to the VPN while the device was connected  We attempted this with the “ping” command. We installed “tcp dump” to observe incoming and outgoing packets:
 
-	$ Sudo apt-get install tcpdump
+	$Sudo apt-get install tcpdump
 
-	$ sudo tcpdump -i eno1
+	$sudo tcpdump -i eno1
 
 After this the system started to monitor connections. We did not quite understand the outcome of it. Before learning how to analyze the connections we realized that we could already connect to the server from Haaga-Helia network. This meant that the ports had been opened for UDP traffic through port 1194 in the networks router. We just had not set the new public ip address of the server to the client file we were using. We had to create a new one.
 
@@ -259,7 +259,7 @@ After this the system started to monitor connections. We did not quite understan
 
 We were able to access the internet from our Ubuntu Server but still couldn’t access our VPN while our devices were connected to the internet. So far the connection was established while connected to the school’s internal network. Next up we had to create a new client file with the proper ip address so that we can access the VPN from the internet. We created a new client file (client2) which contained the correct configurations so now we should be able to access the VPN from the outside web. We transferred the file to our laptop:
 
-	$ Sudo scp ~/client-configs/files/client2.ovpn user@xxx.xxx.xxx.xxx:/home/user/
+	$Sudo scp ~/client-configs/files/client2.ovpn user@xxx.xxx.xxx.xxx:/home/user/
 
 The transfer failed and we got the following message:
 
@@ -299,7 +299,7 @@ The problem was that the server’s cache had the information of the host’s ve
 
 We cleared the server cache in order to be able to connect to our laptop:
 
-	$ Sudo ssh-keygen -f “/root/.ssh/known_hosts” -R xxx.xxx.xxx.xxx
+	$Sudo ssh-keygen -f “/root/.ssh/known_hosts” -R xxx.xxx.xxx.xxx
 
 We successfully connected the server to the laptop and attached and mounted the smartphone to the laptop. The file was transferred onto the phone successfully. We created a new profile using the client2 configuration and could now connect to our VPN using mobile data. We could now access the VPN from any network. 
 
@@ -340,7 +340,7 @@ Well After we discussed more about LDAP intergration we changed our minds again 
 
 We decided to start testing the LDAP function. First we needed to create LDAP server that holds the user information. OpenVPN server will later get the information from the server and then decide whether to give access to the vpn-client. We entered the addresses of the VPNserver (LDAP) client and LDAP server. 
 
-	nano /etc/hosts
+	$nano /etc/hosts
 
 172.28.175.5 example.example server
 172.28.175.1 labravpn client
@@ -348,8 +348,8 @@ We decided to start testing the LDAP function. First we needed to create LDAP se
 
 Next installation of the LDAP
 
-	$ sudo apt-get update
-	$ sudo apt-get -y install slapd ldap-utils
+	$sudo apt-get update
+	$sudo apt-get -y install slapd ldap-utils
 
 During the installation a window popped. It asked a password for the LDAP administrator. Enter password and the installation continues.
 
@@ -358,7 +358,7 @@ Reconfiguring LDAP
 
 After installation we want to make some reconfigurations. In example. we want to set the hostname our selves.
 
-	$ sudo dpkg-reconfigure slapd
+	$sudo dpkg-reconfigure slapd
 
 No
 
@@ -380,14 +380,14 @@ This time we selected “no” to the question “move old database?” and got 
 Allow LDAPv2? = no
 After installation you want to verify LDAP
 
-	$ sudo netstat -antup | grep -i 389
+	$sudo netstat -antup | grep -i 389
 
 
 Setup LDAP base DN
 
 Generating base.ldif file for the domain
 
-	$ nano base.ldif
+	$nano base.ldif
 	dn: ou=People,dc=ldaptest,dc=local
 	objectClass: organizationalUnit
 	ou: People
@@ -397,14 +397,16 @@ Generating base.ldif file for the domain
 	ou: Group
 
 Building the directory structure
-	$ ldapadd -x -W -D “cn=admin,dc=ldaptest,dc=local” -f base.ldif
+	
+	$ldapadd -x -W -D “cn=admin,dc=ldaptest,dc=local” -f base.ldif
 
 Output = enter LDAP password -> adding new entry…
 
 
 Adding LDAP users
 We need to create an LDIF user file for a new user “ldapuser”
-	$ nano ldapuser.ldif 
+	
+	$nano ldapuser.ldif 
 
 Paste:
 	dn: uid=ldapuser,ou=People,dc=ldaptest,dc=local
@@ -427,7 +429,7 @@ Paste:
 
 Next create a user with the ldapadd command,
 
-	$ ldapadd -x -W -D "cn=admin,dc=ldaptest,dc=local" -f ldapuser.ldif
+	$ldapadd -x -W -D "cn=admin,dc=ldaptest,dc=local" -f ldapuser.ldif
 
 We got message “no such file or directory”. The problem was an typo on the file name. We removed the misstyped ldapuser.ldif and recreated it.
 
@@ -436,7 +438,7 @@ Now the output of the command above;
 
 Adding a password for the user;
 
-	$ ldappasswd -s password123 -W -D "cn=admin,dc=ldaptest,dc=local" -x "uid=ldapuser,ou=People,dc=ldaptest,dc=local"
+	$ldappasswd -s password123 -W -D "cn=admin,dc=ldaptest,dc=local" -x "uid=ldapuser,ou=People,dc=ldaptest,dc=local"
  
 -s specify the password for the username
 -x username for which the password is changed
@@ -447,16 +449,23 @@ ldapsearch -x cn=ldapuser -b dc=itzgeek,dc=local
  
 Enable LDAP login
 Send LDAP events to log file /var/log/ldap.log
-	$ sudo nano /etc/rsyslog.d/50-default.conf
+
+	$sudo nano /etc/rsyslog.d/50-default.conf
+	
 add this line to the file-> local4.* /var/log/ldap.log
-	$ sudo service rsyslog restart
- 
+
+	$sudo service rsyslog restart
+	
 When the server configuration was complete we began configuring the client. We began by installing the necessary files:
-	$ sudo apt-get update
-	$ sudo apt-get -y install libnss-ldap libpam-ldap ldap-utils nscd
+
+	$sudo apt-get update
+	$sudo apt-get -y install libnss-ldap libpam-ldap ldap-utils nscd
+	
 After the installation we entered the server’s ip and port number when prompted. Next up we entered the domain name of the LDAP search base. (dc=ldaptest, dc=local). Next you will have to choose which idap version to use, we selected “3”. Next prompt will ask you whether you want the idap server to be the root Database admin of the client, to which we answed “no”. The next prompt will ask you whether you want to login to the database in order to retrieve information, we picked “no” as it’s no imperative that we login to the database at the time. 
 After the initial setup we edited the following file:
-	$ sudo nano /etc/nsswitch.conf
+
+	$sudo nano /etc/nsswitch.conf
+	
 We updated the file so that it looks like so:
  
 	#/etc/nsswitch.conf
@@ -464,6 +473,7 @@ We updated the file so that it looks like so:
 	#Example configuration of GNU Name Service Switch functionality.
 	#If you have the `glibc-doc-reference' and `info' packages installed, try:
 	#`info libc "Name Service Switch"' for information about this file.
+	
 passwd:         compat ldap
 group:             compat ldap
 shadow:          compat ldap
@@ -491,12 +501,12 @@ The only changes we made this time where in the /etc/hosts file. We also replace
 
 This is our /etc/hosts file this time:
 
-172.28.175.5  server
-172.28.175.6  client
+	172.28.175.5  server
+	172.28.175.6  client
 
 This is our new base.ldif file:
 
-	$ nano base.ldif
+	$nano base.ldif
 	dn: ou=People,dc=ilari,dc=local
 	objectClass: organizationalUnit
 	ou: People
@@ -524,7 +534,7 @@ We verified the LDAP:
 	ilari@PEELO:~$ ldapadd -x -W -D "cn=admin,dc=ilari,dc=local" -f ldapuser.ldif
 
 
-For some odd reason command we needed to use didn't work properly and we received error message:
+For some odd reason the command we needed to use didn't work properly and we received error message:
 
 	ldappasswd -s password -W -D "cn=admin,dc=ilari,dc=local" -x "uid=ldapuser,ou=people,dc=ilari,dc=local"
 	ldappasswd: option requires an argument -- 's'
