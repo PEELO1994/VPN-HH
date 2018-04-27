@@ -607,7 +607,7 @@ After that we needed to open to ADSI Edit and from there try to connect AD LDS i
 Next step was go to Active Directory Certificate Services to create a certificate to be used for LDAPS. This process required us to add a new role and again we used all the default settings that wizard suggested to use. We needed to restart computer here to make the configurations valid.
 After this we had to open “AD CS configuration” which was found at “AD CS page”.
 Then we needed to create certificate for our server. We did this according to the instructions above. REMEMBER to use your own credentials etc.
-After certificate was generated we needed to verify that our certificate was present. This was done through “manage computer certificates” and under personal certificates we were able to view our certificate that we created.
+After a certificate was generated we needed to verify that our certificate was present. This was done through “manage computer certificates” and under personal certificates we were able to view our certificate that we created.
 
 Picture
 https://github.com/PEELO1994/VPN-HH/blob/master/kuva456t567.png?raw=true
@@ -622,21 +622,21 @@ We found our private key from there as you can see from picture above.
 
 
 Then we needed to go to the following location C:\ProgramData\Microsoft\Crypto\Keys\<UniqueContainerName>
-ProgramData was hidden folder so we needed to click “View” and from there enable “Hidden items” to get ProgramData to become visible. 
-After we found the right file we right clicked the file and clicked properties
+ProgramData was a hidden folder so we needed to click “View” and from there enable “Hidden items” to get ProgramData to become visible. 
+After we found the right file we right clicked the file and clicked properties.
 There we clicked Security tab --> edit --> add new group named “NETWORK SERVICE” and add read permissions to that group. 
 
 Picture
 https://github.com/PEELO1994/VPN-HH/blob/master/kvua677.jpg?raw=true
 
 
-Next step was to import the certificate into JRE key store since our certificate “CN=VPNPOJATLDAP” is not signed by any trusted certification authority which is configured in your JRE keystore. In order to import this certificate using the keytool utility, we needed first export this cert as a .CER from the machine certificate store:
-We Clicked Start --> Search “Manage Computer Certificates” and we opened it. 
-Then we to open “personal”, right clicked VPNPOJATLDAP cert and clicked  “Export”.
+Next step was to import the certificate into the JRE key store since our certificate “CN=VPNPOJATLDAP” is not signed by any trusted certificate authority which is configured in your JRE keystore. In order to import this certificate using the keytool utility, we first had to export this cert as a .CER from the machine certificate store:
+We Clicked Start --> Search “Manage Computer Certificates” and opened it. 
+We opened “personal”, right clicked VPNPOJATLDAP cert and clicked  “Export”.
 
 → “Certificate Export Wizard” opened 
 Then again we followed the instructions of the wizard and completed the export.
-Now certificate was supposed to be successfully exported.
+Now the certificate was supposed to be successfully exported.
 Next we needed to import it to JRE Keystore using the keytool command.
 
 
