@@ -327,3 +327,73 @@ Make sure the file was created properly "client1.ovpn"
 The following command will allow you to edit the file in case of need:
 
     $sudo nano ~/client-configs/files/client1.ovpn
+    
+    
+## Client Installation tutorials for different operating systems
+
+## Windows
+
+!!!OpenVPN needs administarite privileges to install!!!
+
+If you are using windows based OS as a client computer, first you need to install OpenVPN Client GUI application from here: https://openvpn.net/index.php/open-source/downloads.html
+There you will choose appropriate installer version of your windows.
+
+After installation you need to copy your .ovpn client file to:
+	
+	$C:\Program Files\OpenVPN\config
+	
+Quick tip: Easiest way to transfer your client.ovpn file from your linux based OpenVPN server to windows is to use WinSCP software.
+
+## LINUX 
+
+If you are using ubuntu or debian based OS you can install OpenVPN package through terminal:
+
+	$sudo apt-get update
+	$sudo apt-get install openvpn
+	
+Then make sure your distribution includes /etc/openvpn/update-revolv.conf script:
+
+	$ls /etc/openvpn
+	
+	Output
+	update-resolv-conf
+
+Next you need to edit your client configuration file:
+
+	nano client1.ovpn (or what ever your client files name is)
+
+There you need to uncomment following lines:
+
+	script-security 2
+	up /etc/openvpn/update-resolv-conf
+	down /etc/openvpn/update-resolv-conf
+
+Then save and close file
+
+Now you can try to connect to your VPN with this command:
+
+	sudo openvpn --config client1.ovpn (or again whatever your client file name is that you have transferred)
+
+If everything is done correctly you should now connect to your server.
+
+## Android Phone
+
+First you need to download OpenVPN Connect application from appstore which is the official Android OpenVPN client application.
+Then you need to transfer your .ovpn file to your Smartphone whatever way you find most convenient.
+
+After installation star the OpenVPN app and from the menu choose "import" to import the profile
+Then navigate to the location where you transfered your profile and select the file.
+App will tell you that profile was imported.
+
+Then you just simply tap connect button and if everything is done correctly you should be able to connect to your OpenVPN server. 
+
+
+
+
+
+
+
+	
+
+
+
