@@ -333,7 +333,7 @@ The following command will allow you to edit the file in case of need:
 
 ## Windows
 
-!!!OpenVPN needs administarite privileges to install!!!
+!!!OpenVPN needs administrative privileges to install!!!
 
 If you are using windows based OS as a client computer, first you need to install OpenVPN Client GUI application from here: https://openvpn.net/index.php/open-source/downloads.html
 There you will choose appropriate installer version of your windows.
