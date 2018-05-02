@@ -1,5 +1,23 @@
 # OpenVPN installation and configuration tutorial 
 
+## Requirements before getting started: 
+
+-Ubuntu 16.04 LTS server installed
+
+Quick note: If you try to install ubuntu 16.04 from USB-stick and the installation gives an error message something about it trying to install updates from cd-rom. We managed to find one solution to fix that error in case that happens.
+So during installation if error occurs you these are the commands that you need:
+
+	$ALT+F2 (Switches view to terminal screen)
+	$cd /target/etc/apt
+	$cp sources.list.apt-install sources.list 
+	$nano sources.list (Here you need to add comment to line which indicates something about cd-rom )
+	$chroot /target apt-get update 
+	$chroot /target apt-get upgrade
+	$ALT+F1 (Switches back to installation screen)
+
+Now you just follow installation normally again and hopefully this works for you.
+
+
 ## The installation of OpenVPN and creation of the RSA keys:
 
 
