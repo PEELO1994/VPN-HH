@@ -342,7 +342,7 @@ After installation you need to copy your .ovpn client file to:
 	
 	$C:\Program Files\OpenVPN\config
 	
-Quick tip: Easiest way to transfer your client.ovpn file from your linux based OpenVPN server to windows is to use WinSCP software.
+Quick tip: Easiest way to transfer your client.ovpn file from your linux based OpenVPN server to windows is to use WinSCP software, atleast that is what we found out to be most convenient way in our situation.  
 
 ## LINUX 
 
