@@ -232,46 +232,131 @@ Now we were able to try to start our server and if everything was cofigured corr
     
 If everything went well, your output should look something that looks like this:
 
+	labra-vpn-project@Open-VPN-server:~$ sudo systemctl status openvpn@VPNSERVER
+	[sudo] password for labra-vpn-project:
+	● openvpn@VPNSERVER.service - OpenVPN connection to VPNSERVER
+   	Loaded: loaded (/lib/systemd/system/openvpn@.service; enabled; vendor preset:
+   	Active: active (running) since Wed 2018-05-02 11:45:47 EEST; 12min ago
+     	Docs: man:openvpn(8)
+           https://community.openvpn.net/openvpn/wiki/Openvpn23ManPage
+           https://community.openvpn.net/openvpn/wiki/HOWTO
+  	Process: 1196 ExecStart=/usr/sbin/openvpn --daemon ovpn-%i --status /run/openv
+ 	Main PID: 1286 (openvpn)
+   	CGroup: /system.slice/system-openvpn.slice/openvpn@VPNSERVER.service
+           └─1286 /usr/sbin/openvpn --daemon ovpn-VPNSERVER --status /run/openvp
 
+	May 02 11:53:33 Open-VPN-server ovpn-VPNSERVER[1286]: 172.28.171.92:55268 Data C
+	May 02 11:53:33 Open-VPN-server ovpn-VPNSERVER[1286]: 172.28.171.92:55268 Data C
+	May 02 11:53:33 Open-VPN-server ovpn-VPNSERVER[1286]: 172.28.171.92:55268 Contro
+	May 02 11:53:33 Open-VPN-server ovpn-VPNSERVER[1286]: 172.28.171.92:55268 [harto
+	May 02 11:53:33 Open-VPN-server ovpn-VPNSERVER[1286]: harto/172.28.171.92:55268
+	May 02 11:53:33 Open-VPN-server ovpn-VPNSERVER[1286]: harto/172.28.171.92:55268
+	May 02 11:53:33 Open-VPN-server ovpn-VPNSERVER[1286]: harto/172.28.171.92:55268
+	May 02 11:53:36 Open-VPN-server ovpn-VPNSERVER[1286]: harto/172.28.171.92:55268
+	May 02 11:53:36 Open-VPN-server ovpn-VPNSERVER[1286]: harto/172.28.171.92:55268
+	May 02 11:53:36 Open-VPN-server ovpn-VPNSERVER[1286]: harto/172.28.171.92:55268
+	lines 1-21/21 (END)...skipping...
 
+After this we typed in this command, that will start the service automaticly when system boots:
 
     $sudo systemctl enable openvpn@server ( if everything went well,this command will start the service automaticly when system boots)
 
 ## Create Client Configuration Infrastructure
 
-Configuration generation script
+Next step, was to set up a system that will allow us to create client configuration files easily.
 
-We created a simple script to match our configuration to the proper certificates, keys and crypted files
+we needed to create Client Config Directory Structure in our home directory to store the files:
+
+	$mkdir -p ~/client-configs/files
+	
+And after since our client configuration files will have the client keys embedded, we locked down permissions on our inner directory:
+
+	$chmod 700 ~/client-configs/files
+	
+## Creating a Base Configuration
+
+First step here was to copy our client configuration into our directory to use as our base condiguration:
+
+	$cp /usr/share/doc/openvpn/examples/sample-config-files/client.conf ~/client-configs/base.conf
+
+Now we opened the file:
+
+	$nano ~/client-configs/base.conf
+	
+Inside we needed to make lots of changes to match our requirements and stuff.
+
+First, step was to locate the remote directive. This points the client to our OpenVPN server address. This should be the public IP address of your OpenVPN server. If you changed the port that the OpenVPN server is listening on, change 1194 (as we did) to the port you selected:
+	
+	$remote server_IP_address 1194
+	
+Then we made sure that the protocol matches the value that we used in the server configuration:
+
+	$proto udp
+	
+Next we uncommented the user and group directives:
+
+	$user nobody
+	$group nogroup
+	
+Next comment ca,cert and key directives
+
+	$#ca ca.crt
+	$#cert client.crt
+	$#key client.key
+
+Next we needed to match cipher and auth setting that we set in the /etc/openvpn/server.conf file:
+
+	$cipher AES-128-CBC
+	$auth SHA256
+
+Then we added directive named key-direction at the bottow of the file.(This must be set to "1" to work with server):
+
+	$key-direction 1
+	
+And last modification we needed to do was add few commented lines:
+
+	$ # script-security 2
+	$ # up /etc/openvpn/update-resolv-conf
+	$ # down /etc/openvpn/update-resolv-conf
+	
+!!!!If you run client on linux you need to uncomment these lines.!!!!!
+
+
+## Creating a Configuration Generation Script
+
+Now we created a simple script to match our configuration to the proper certificates, keys and crypted files:
 
     $sudo nano ~/client-configs/make_config.sh (To add the following information):
 
-#!/bin/bash
+Add these lines inside the file:
 
-#First argument: Client identifier
+	#!/bin/bash
 
-KEY_DIR=~/openvpn-ca/keys
+	#First argument: Client identifier
 
-OUTPUT_DIR=~/client-configs/files
+	KEY_DIR=~/openvpn-ca/keys
 
-BASE_CONFIG=~/client-configs/base.conf
+	OUTPUT_DIR=~/client-configs/files
 
-cat ${BASE_CONFIG} \
-    <(echo -e '<ca>') \
-    ${KEY_DIR}/ca.crt \
-    <(echo -e '</ca>\n<cert>') \
-    ${KEY_DIR}/${1}.crt \
-    <(echo -e '</cert>\n<key>') \
-    ${KEY_DIR}/${1}.key \
-    <(echo -e '</key>\n<tls-auth>') \
-    ${KEY_DIR}/ta.key \
-    <(echo -e '</tls-auth>') \
-    > ${OUTPUT_DIR}/${1}.ovpn
+	BASE_CONFIG=~/client-configs/base.conf
+
+	cat ${BASE_CONFIG} \
+    	<(echo -e '<ca>') \
+    	${KEY_DIR}/ca.crt \
+    	<(echo -e '</ca>\n<cert>') \
+    	${KEY_DIR}/${1}.crt \
+    	<(echo -e '</cert>\n<key>') \
+    	${KEY_DIR}/${1}.key \
+    	<(echo -e '</key>\n<tls-auth>') \
+   	 ${KEY_DIR}/ta.key \
+    	<(echo -e '</tls-auth>') \
+    	> ${OUTPUT_DIR}/${1}.ovpn
 
 Save the file and run it:
 
     $chmod 700 ~/client-configs/make_config.sh
 
-Generate client configurations
+## Generate client configurations
 
 Create a configuration file for the client:
 
@@ -282,17 +367,22 @@ Make sure the file was created properly "client1.ovpn"
 
     $sudo ls ~/client-configs/files
 
-The following command will allow you to edit the file:
+The following command will allow you to edit the file in case of need:
 
     $sudo nano ~/client-configs/files/client1.ovpn
 
-Connecting client device
+## Installation and connecting client device
 
-We attempted connecting a smartphone to our VPN server. The first step is to transfer the .ovpn file we just created onto the phone as it contains all the keys and tools required to form the connection. We transferred the file onto a USB stick first as we couldn't move it directly to the phone. Eventually we managed to add the file to the phone's download folder.    
+We tested connection clients with Windows,Linux and Android phone
+
+First we attempted connecting a smartphone to our VPN server. The first step is to transfer the .ovpn file we just created onto the phone as it contains all the keys and tools required to form the connection. We transferred the file onto a USB stick first as we couldn't move it directly to the phone. Eventually we managed to add the file to the phone's download folder.    
 
 Next up we downloaded the OpenVPN Connect app from google play store. Upon starting the app we selected the .ovpn file and hit the import button. The app managed to attain the server's IP -address but the connection failed with a "Connection timed out" message.
 
-We figured out the problem was most likely caused by the router's firewall and a closed port (1194).     
+We figured out the problem was most likely caused by the router's firewall and a closed port (1194).
+
+
+
 
 ## Installation and configuration of Ubuntu Server 16.04 and OpenVPN 
 ## 28.2.2018 
