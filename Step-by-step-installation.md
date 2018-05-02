@@ -5,7 +5,7 @@
 -Ubuntu 16.04 LTS server installed
 
 Quick note: If you try to install ubuntu 16.04 from USB-stick and the installation gives an error message something about it trying to install updates from cd-rom. We managed to find one solution to fix that error in case that happens.
-So during installation if error occurs you these are the commands that you need:
+So during installation if error occurs, these are the commands that you need:
 
 !!!In case you get permission denied in some commands just add sudo in front!!!
 
