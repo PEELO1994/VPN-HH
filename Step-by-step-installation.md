@@ -3,7 +3,7 @@
 ## The installation of OpenVPN and creation of the RSA keys:
 
 
-After you have installed server of your choice, where you have decided to start install your OpenVPN server (in our case ubuntu.16.04 lts) you will start by installing OpenVPN packets that you need.
+After you have installed server of your choice in our case ubuntu.16.04 lts, you will start by installing OpenVPN packets that you need on your server computer.
 
     $sudo apt-get install openvpn easy-rsa
 
