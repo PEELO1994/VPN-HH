@@ -1,8 +1,15 @@
 # OpenVPN installation and configuration tutorial 
 
+## Basic hardware and software that we used on this project:
+	-Ubuntu 16.04
+	-OpenVPN 
+	-HP computer
+	-WinSCP
+	-
+
 ## Requirements before getting started: 
 
--Ubuntu 16.04 LTS server installed
+-Ubuntu 16.04 LTS server installed 
 
 Quick note: If you try to install ubuntu 16.04 from USB-stick and the installation gives an error message something about it trying to install updates from cd-rom. We managed to find one solution to fix that error in case that happens.
 So during installation if error occurs, these are the commands that you need:
