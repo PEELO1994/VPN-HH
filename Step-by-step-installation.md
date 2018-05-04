@@ -71,7 +71,7 @@ Now we needed to just continue pressing enter as the "vars" -file should supply 
 
 Next we needed to create our server certificate and key pair by typing in:
 
-    $./build-key-server server (To create a key)
+    $./build-key-server VPNSERVER (To create a key)
 
 Once again continue with enter until the last two questions which should both be answered with a yes.
 
@@ -100,17 +100,17 @@ First step was to copy all the files we needed to the /etc/openvpn configuration
 
 	$cd ~/openvpn-ca/keys
 
-    $sudo cp ca.crt server.crt server.key ta.key dh2048.pem /etc/openvpn (To copy the files onto the OpenVPN folder)
+    $sudo cp ca.crt VPNSERVER.crt VPNSERVER.key ta.key dh2048.pem /etc/openvpn (To copy the files onto the OpenVPN folder)
     
 And after this we needed to copy and unzip OpenVPN configuration file into configuration directory so we could use it as a basis for our setup.
 
-    $gunzip -c /usr/share/doc/openvpn/examples/sample-config-files/server.conf.gz | sudo tee /etc/openvpn/server.conf (To copy and unzip the sample config)
+    $gunzip -c /usr/share/doc/openvpn/examples/sample-config-files/VPNSERVER.conf.gz | sudo tee /etc/openvpn/VPNSERVER.conf (To copy and unzip the sample config)
     
 ## Adjusting the OpenVPN Configuration
 
 First we needed to modify the server configuration file:
  
- 	$sudo nano /etc/openvpn/server.conf
+ 	$sudo nano /etc/openvpn/VPNSERVER.conf
 	
 Adjustments that we needed to do were these:
 
@@ -190,9 +190,9 @@ Now our server was suppossedly to configured correctly to handle OpenVPN traffic
 
 Now we were able to try to start our server and if everything was cofigured correctly it should start smoothly.
 
-    $sudo systemctl start openvpn@server 
+    $sudo systemctl start openvpn@VPNSERVER
 
-    $sudo systemctl status openvpn@server (check whether the service restarted properly)
+    $sudo systemctl status openvpn@VPNSERVER (check whether the service restarted properly)
     
 If everything went well, your output should look something that looks like this:
 
@@ -223,7 +223,7 @@ If everything went well, your output should look something that looks like this:
 
 After this we typed in this command, that will start the service automaticly when system boots:
 
-    $sudo systemctl enable openvpn@server ( if everything went well,this command will start the service automaticly when system boots)
+    $sudo systemctl enable openvpn@VPNSERVER ( if everything went well,this command will start the service automaticly when system boots)
 
 ## Create Client Configuration Infrastructure
 
