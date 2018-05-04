@@ -1,11 +1,11 @@
 # OpenVPN installation and configuration tutorial 
 
-## Basic hardware and software that we used on this project:
+## Some basic hardware and software that we used on this project:
 	-Ubuntu 16.04
 	-OpenVPN 
-	-HP computer
+	-HP Compaq 8200 Elite Convertible Minitower
 	-WinSCP
-	-
+	
 
 ## Requirements before getting started: 
 
@@ -393,14 +393,4 @@ Then navigate to the location where you transfered your profile and select the f
 App will tell you that profile was imported.
 
 Then you just simply tap connect button and if everything is done correctly you should be able to connect to your OpenVPN server. 
-
-
-
-
-
-
-
-	
-
-
 
