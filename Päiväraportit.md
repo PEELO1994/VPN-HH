@@ -1,46 +1,7 @@
 # Raportit
+----------------------------------------------------------------------------------------------------------------------------------------
 
 
-
-
-
-Työraportti	3
-Serverin kokeiluasennus	3
-Serverin ensimmäinen asennus	5
-Serverin toinen asennus	10
-Clientin sertifikaatti	10
-Konfiguroidaan OpenVPN -palvelua	11
-IP Forwarding	12
-Tulimuuri	12
-Portin avaus	13
-Käynnistä and ota käyttöön OpenVPN -palvelu	13
-Client Configuration Infrastructure (tehdään edelleen server- koneella)	14
-Ubuntu Server ja OpenVPN testausta	16
-OpenVPN ja RSA avaimet	18
-Clientin sertifikaatti	19
-Konfiguroidaan OpenVPN -palvelu	19
-IP Forwarding	19
-Tulimuuri	20
-OpenVPN käynnistys ja käyttöönotto	20
-Configuration Generation Script	21
-Generoi client konfiguraatiot	22
-Yhdistetään client laitteeseen	22
-Ubuntu Server 16.04 ja OpenVPN asennus ja konfigurointi	24
-Linux asennus	25
-Android asennus	26
-Luodaan uusi client tiedosto	27
-VPN:n testaaminen	28
-Luodaan “client.ovpn” tiedosto Hartolle	29
-LDAP testausta	30
-Konfiguroidaan LDAP	30
-LDAP domain konfiguraatio	31
-Lisätään LDAP käyttäjiä	32
-LDAP virtuaaliympäristössä	35
-Asennetaan LDAPS Windows Server 2016	35
-Serverin käyttäjien yhteys -lokien tarkastelua	37
-OPENVPN serverin uudelleenluonti uudelle “Tuotantokoneelle”	37
-Virhe käynnistäessä VPN palvelua	37
-Windows Server 2016 asennus	39
 
 
 # Työraportti
