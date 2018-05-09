@@ -1,6 +1,6 @@
-## Raportit
-# sdsd
-######## sdsd
+# Raportit
+
+
 
 
 
@@ -42,10 +42,11 @@ OPENVPN serverin uudelleenluonti uudelle “Tuotantokoneelle”	37
 Virhe käynnistäessä VPN palvelua	37
 Windows Server 2016 asennus	39
 
-Työraportti
+
+# Työraportti
 
 14.2.2018 
-Serverin kokeiluasennus
+## Serverin kokeiluasennus
 
 
 Tarkoituksena on asentaa Ubuntu Server ensimmäistä kertaa kokeiluna. Luotiin USB asennustikku Ubuntu Server 16.04.3 LTS- versiolla. Asennettiin Ubuntu kannettavalle tietokoneelle tikun avulla. Software Selection kohdassa valitsimme “Basic Ubuntu Server”, “DNS Server” ja “Basic Utilities” vaihtoehdot. OpenSSH ei asennettu koska emme tarvitse sitä testiympäristössä. Asennus ei onnistunut, koneen näyttö oli mustana, eikä komentoja pystynyt antamaan. Asensimme uudestaan alusta, asennus ei onnistunut taaskaan. Tällä kertaan valittiin “install ubuntu server”, joka ei onnistunut. Tarkoitus oli valita vaihtoehto “install”. Kolmas asennus onnistui. Asennettiin samalla desktop, jolloin voidaan graafisen käyttöliittymän kautta testata openVPN: n käyttöä. Asennettiin openVPN. 
@@ -109,7 +110,7 @@ sudo mkdir /etc/openvpn/easy-rsa/
 20.2.2018
 
 
-Serverin ensimmäinen asennus
+## Serverin ensimmäinen asennus
 
 
 Aloitettiin laittamalla asennus Ubuntu cd:n Host palvelimeen, jossa pyöri Vmware ESXi 6.0. vSphere Client ohjelmalla. Käynnistimme yhden luomistamme virtuaalikoneista ja asensimme Ubuntun siihen.
@@ -191,7 +192,7 @@ Kuvasta näkyy tiedot jotka syötettiin.
 
 
 21.2.2018
-Serverin toinen asennus
+## Serverin toinen asennus
 
 Sertifikaatti, avain ja kryptaus tiedostot:
 Yritettiin luoda avaimia, mutta saimme seuraavan ilmoituksen;
@@ -328,7 +329,7 @@ If your client is running Linux and has an ”/etc/openvpn/update-resolv-conf”
 23.2.2018
 
 
-Ubuntu Server ja OpenVPN testausta
+## Ubuntu Server ja OpenVPN testausta
 
 
 Aloitimme asentamalla Lenovon T400 läppäriin Ubuntu Server 16.04 LTS USB-tikulta. Seurasimme ohjeita jotka oli luotu virtuaaliympäristön testauksessa aikaisemmin viikolla. Asennus sujui muuten normaalisti, mutta “software selection” kohdassa saimme ilmoituksen “installation step failed!”. Googlettelimme ongelmaa ja löysimme mahdollisen ratkaisun. Ongelma oli ilmeisesti siinä, että tietokone yritti asentaa ohjelmistoja olemattomalta CD-levyltä, kun tarkoitus oli ladata tiedot internetistä.
@@ -601,7 +602,7 @@ Tutkimme ongelmaa netistä ja OpenVPN sovelluksen lokitiedostoista sekä kävimm
 28.2.2018
 
 
-Ubuntu Server 16.04 ja OpenVPN asennus ja konfigurointi
+## Ubuntu Server 16.04 ja OpenVPN asennus ja konfigurointi
 
 
 Pääsimme vihdoinkin asentamaan Ubuntu server 16.04:n ja openvpn:än projektimme lopulliselle koneelle, jossa oikea käyttö tulee tapahtumaan.
@@ -690,7 +691,7 @@ Lopetimme tältä erää tähän ja jätimme serverin pyörimään servulaan.
 
 14.3.2018
 
-Luodaan uusi client tiedosto
+## Luodaan uusi client tiedosto
 
 Portti 1194/udp on nyt auki liikenteelle, mikä tarkoittaa että meidän Ubuntu Server voi nyt ottaa yhteyden internetiin. Tässä vaiheessa pystymme ottamaan salatun yhteyden VPN serveriin. Seuraavaksi asennettiin “tcp dump” -ohjelma, jotta voimme seurata ip -pakettien liikennettä.
 
@@ -752,7 +753,7 @@ Ohjeet sisältävät seuraavat kohdat:
 
 28.3.2018
 
-Luodaan “client.ovpn” tiedosto Hartolle
+## Luodaan “client.ovpn” tiedosto Hartolle
 
 
 Otimme yhteyden VPN serveriin:
@@ -793,7 +794,7 @@ client1.ovpn  client2.ovpn  harto.ovpn
 11.4.2018
 
 
-LDAP testausta
+## LDAP testausta
 
 
 Aloitimme asentamalla LDAP -server koneen joka sisältää käyttäjätiedot. OpenVPN -serverin tulee pystyä saamaan kirjautumistiedot LDAP -serveriltä kun tämä konfiguraatio on valmis. Ensiksi muutettiin osoitteita “hosts” -tiedostossa. Annettiin LDAP -client ja LDAP -server osoitteet.
@@ -957,7 +958,7 @@ Asennuksen jälkeen kokeilimme kirjautua server -koneeseen vasta tehdyllä käyt
 20.4.2018
 
 
-LDAP virtuaaliympäristössä
+## LDAP virtuaaliympäristössä
 
 
 Ohje: 
@@ -1005,7 +1006,7 @@ Poistettiin vanhat OpenLDAP tiedostot.
 25.4.2018
 
 
-Serverin käyttäjien yhteys -lokien tarkastelua 
+## Serverin käyttäjien yhteys -lokien tarkastelua 
 
 
 Komennolla sudo “cat /etc/openvpn/openvpn-status.log” pääsee tarkastelemaan muodostettuja VPN yhteyksiä. Loki näyttää millä “client.ovpn” tiedostolla yhteyksiä on muodostettu, sekä mistä ja milloin.
@@ -1060,7 +1061,7 @@ Saimme kuitenkin tiedon että palvelu ei ollut käynnistynyt oikein. Kyseessä o
 2.5.2018
 
 
-Windows Server 2016 asennus
+## Windows Server 2016 asennus
 
 
 Asensimme Windows Server 2016 koneeseen josta tulisi meidän LDAP -serveri. Käytimme USB tikkua jossa oli valmis ISO -kuva. Asennettiin desktop versio, jonka jälkeen aloitimme LDAP konfiguraation.
