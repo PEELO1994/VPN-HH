@@ -45,7 +45,9 @@ Windows Server 2016 asennus	39
 
 # Työraportti
 
+
 14.2.2018 
+
 ## Serverin kokeiluasennus
 
 
@@ -93,22 +95,7 @@ Luotiin hakemisto:
 sudo mkdir /etc/openvpn/easy-rsa/
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 20.2.2018
-
 
 ## Serverin ensimmäinen asennus
 
@@ -135,11 +122,7 @@ Tällä kertaa asennus näytti toimivan, niin kuin pitikin ja boottauksen jälke
 Seuraavaksi halusimme antaa staattisen osoitteen serverille, jotta yhteyden ottaminen on selkeämpää. Täytyi muokata tiedostoa “/etc/network/interfaces”
 Tiedosto näytti tältä, kun käytössä oli dhcp:
 
-
 Tältä se näytti, kun olimme laittaneet staattisen osoitteen:		   
-
-
-
 
 Seuraavaksi komento 
 sudo service networking restart
@@ -163,12 +146,6 @@ export KEY_ORG= “FORT-FUNSTON”
 export KEY_EMAIL= “lassi@xxx.xxx.xxx.xxx”
 export KEY_OU “MyOrganisationalUnit”
 
-
-
-
-
-
-
 Seuraavaksi “vars” kansio tuli poluttaa eli komento ja ulostulo kuten kuvassa:
 
 Seuraavaksi varmistetaan, että ollaan puhtaassa ympäristössä ja annetaan komento:
@@ -178,21 +155,10 @@ Nyt root-sertifikaatin luonti komennolla:
 Kuvasta näkyy tiedot jotka syötettiin.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 21.2.2018
+
 ## Serverin toinen asennus
+
 
 Sertifikaatti, avain ja kryptaus tiedostot:
 Yritettiin luoda avaimia, mutta saimme seuraavan ilmoituksen;
@@ -208,14 +174,14 @@ Sitten HMAC allekirjoituksen luonti vahvistamaan serverin TLS:n eheyden tarkistu
 HMAC = Hash-based message authentication code, sitä voidaan käyttää sekä tiedon eheyden varmistamiseen tai viestin autenttisuuden tarkistamiseen.
 openvpn –genkey –secret keys/ta.key
 
-Clientin sertifikaatti
+### Clientin sertifikaatti
 
 Yksinkertaisuuden nimissä, luomme clientille tarkoitetun sertifikaatin server- koneella. Näitä voi luoda niin paljon kun haluaa jos on useita clienttejä. Halusimme luoda sertifikaatille myös salasanan, joten annettiin seuraavat komennot:
 source vars
 ./build-key-pass client1
 Taas enteriä painamalla eteenpäin, koska tiedot on jo haettu “vars” -tiedostosta.
 
-Konfiguroidaan OpenVPN -palvelua
+### Konfiguroidaan OpenVPN -palvelua
 
 Seuraavaksi tulee kopioida tähän mennessä luodut tiedostot /etc/openvpn hakemistoon. 
 cd /openvpn-ca/keys
@@ -236,32 +202,32 @@ Ohjataan kaikki web liikenne VPN:n läpi. Otetaan puolipisteet pois kohdista:
 	push “dhcp-option DNS xxx.xxx.xxx.xxx”
 Käytettäviä portteja pystyy myös vaihtamaan, mikäli sille on tarvetta, mutta tässä vaiheessa emme niitä vaihtaneet.
 
-IP Forwarding
+### IP Forwarding
 
 Serverille täytyy mahdollistaa liikenteen ohjaus, jotta VPN:n toiminnallisuutta voidaan hyödyntää. Muokkasimme tiedostoa “/etc/sysctl.conf” postamalla risuaidan kohdan ”net.ipv4.ip_forward” edestä. Tämän jälkeen tallennus ja uusien asetusten päivitys istunnolle.
 sudo nano /etc/sysctl
 sudo sysctl –p
 
-Tulimuuri
+### Tulimuuri
 
 Seuraavaksi muutimme palomuurin sääntöjä, jotta VPN pystyy naamioimaan clienttien yhteyksiä. Ensin selvitetään 
 public network interface -> ip route | grep default
 Sitten muokataan sääntöjä:
 sudo nano /etc/ufw/before.rules
 Sinne lisäsimme seuraavat rivit. Tämä lisättiin ensimmäisen sektion perään eli noin 10:lle riville. Tässä pitää muistaa lisätä juuri tarkastama interfacen nimi, jonka merkkasimme punaisella.
-# START OPENVPN RULES
-# NAT table rules
+#START OPENVPN RULES
+#NAT table rules
 *nat
 :POSTROUTING ACCEPT [0:0] 
-# Allow traffic from OpenVPN client to wlp11s0 (change to the interface you   discovered!)
+	# Allow traffic from OpenVPN client to wlp11s0 (change to the interface you   discovered!)
 -A POSTROUTING -s 10.8.0.0/8 -o ens33 -j MASQUERADE
 COMMIT
-# END OPENVPN RULES
+#END OPENVPN RULES
 Tämän jälkeen palomuurille täytyy kertoa, että ohjatut paketit hyväksytään defaulttina. Muutetaan ufw -tiedostosta kohtaan:
  DEFAULT_FORWARD_POLICY -> ACCEPT
 sudo nano /etc/default/ufw	
 
-Portin avaus
+### Portin avaus
 
 OpenVPN:lle on avattava portti, jotta liikenne kulkee. 
 sudo ufw allow 1194/udp
@@ -302,32 +268,7 @@ Nämä otetaan käyttöön jos clientillä linux, tässä lainattu teksti näihi
 If your client is running Linux and has an ”/etc/openvpn/update-resolv-conf” file, you should uncomment these lines from the generated OpenVPN client configuration file.”
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 23.2.2018
-
 
 ## Ubuntu Server ja OpenVPN testausta
 
@@ -358,29 +299,9 @@ ALT + F1
 
 Seuraavaksi kokeilimme uudestaan jatkaa kohdasta “software selection”. Huomasimme että update komento oli tuonut paljon lisävaihtoehtoja. Emme ottaneet mitään turhaa, ainoastaan “standard utility tools”. Asennuksen päätyttyä boottauksen jälkeen saimme login promptin näkyviin, niin kuin pitikin:
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 Kävimme katsomassa tiedostoa “/etc/network/interfaces” ja huomasimme, että sieltä puuttuu kokonaan kohta “primary network interface”, joten laitoimme sen sinne ja otimme käyttöön dhcp:n, koska olimme kotiympäristössä.
 
-# The primary network interface
+#The primary network interface
 auto lo
 iface lo inet dhcp
 
@@ -392,9 +313,7 @@ Tajusimme että, tarvitsemme DNS palvelun kun käytämme dhcp:tä, tai niin luul
 
 Käytimme koko ajan wi-fi -yhteyttä ja jostain syystä reititin ei suostunut antamaan wi-fi:n kautta dhcp osoitetta. Yritimme vaihtaa “primary network interface” asetuksia, mutta emme millään saaneet osoitteita toimimaan. Päädyimme lopulta kokeilemaan asennusta kolmannen kerran kytkemällä koneen ensin kaapelilla verkkoon. Kaapelin ollessa kiinni saimme heti dhcp osoitteen niin kuin pitikin. Nyt “interfaces” kansion sisältä löytyi asennuksen jälkeen oikeat tiedot dhcp:n käytöstä.
 
-
 OpenVPN ja RSA avaimet
-
 
 sudo apt-get install openvpn easy-rsa
 
@@ -430,9 +349,7 @@ HMAC allekirjoituksen luonti vahvistamaan serverin TLS:n eheyden tarkistuskykyj�
 
 openvpn –genkey –secret keys/ta.key
 
-
 Clientin sertifikaatti
-
 
 ./build-key- pass client1
 
@@ -450,8 +367,7 @@ gunzip -c /usr/share/doc/openvpn/examples/sample-config-files/server.conf.gz | s
 
 “Conf” -tiedostoon tehtiin samat muutokset, kuin aiemmassa testausdokumentissa.
 
-IP Forwarding
-
+### IP Forwarding
 
 	sudo nano /etc/sysctl.conf
 	
@@ -461,8 +377,7 @@ IP Forwarding
 
 sudo sysctl -p	
 
-Tulimuuri
-
+### Tulimuuri
 
 Selvitetään “public network interface - ip route | grep default”
 
@@ -470,14 +385,14 @@ sudo nano /etc/ufw/before.rules
 
 Lisätään seuraava:
 
-# START OPENVPN RULES
-# NAT table rules
+#START OPENVPN RULES
+#NAT table rules
 *nat
 :POSTROUTING ACCEPT [0:0]
-# Allow traffic from OpenVPN client to wlp11s0 (change to the interface you discovered!)
+#Allow traffic from OpenVPN client to wlp11s0 (change to the interface you discovered!)
 -A POSTROUTING -s 10.8.0.0/8 -o ens33 -j MASQUERADE
 COMMIT
-# END OPENVPN RULES
+#END OPENVPN RULES
 
 Portin avaus:
 
@@ -486,9 +401,7 @@ sudo ufw allow 1194/udp
 sudo ufw disable
 sudo ufw enable
 
-
-OpenVPN käynnistys ja käyttöönotto
-
+### OpenVPN käynnistys ja käyttöönotto
 
 Server on konfiguraatio -tiedoston nimi:
 
@@ -504,9 +417,7 @@ sudo systemctl enable openvpn@server
 
 Client konfiguraatio toteutettiin samalla tavalla, kuin edellisessä dokumentissa.
 
-
-Configuration Generation Script
-
+### Configuration Generation Script
 
 Loimme yksinkertaisen skriptin, joka yhdistää konfiguraation oikeisiin sertifikaatteihin, avaimiin ja kryptaus -tiedostoihin. 
 
@@ -538,9 +449,7 @@ Tallenna, poistu ja merkitse tiedosto ajettavaksi:
 
 chmod 700 ~/client-configs/make_config.sh
 
-
-Generoi client konfiguraatiot 
-
+### Generoi client konfiguraatiot 
 
 Luodaan “client1”:lle konfiguraatio -tiedosto:
 
@@ -555,9 +464,7 @@ Jos haluat muokata “files” -kansiota “client1.ovpn” tiedostoja:
 
 sudo nano ~/client-configs/files/client1.ovpn
 
-
-Yhdistetään client laitteeseen
-
+### Yhdistetään client laitteeseen
 
 Kokeilimme aluksi saada älypuhelimen yhdistettyä VPN -serveriimme. Ensin meidän täytyi saada juuri luomamme .ovpn tiedosto siirrettyä puhelimeen. Tiedosto sisälsi siis tarvittavat työkalut yhteyden muodostamiseen (avaimet yms.). Siirsimme tiedostot USB:lle koska suora tiedoston siirto älypuhelimeen ei onnistunut. Saimme .ovpn tiedoston siirrettyä puhelimen downloads kansioon.
 
@@ -566,41 +473,7 @@ Latasimme puhelimella Androidin Google Play:stä OpenVPN Connect -sovelluksen. S
 Tutkimme ongelmaa netistä ja OpenVPN sovelluksen lokitiedostoista sekä kävimme läpi sovelluksen asetuksia. Olemme nyt melko varmoja, että ongelma piilee talouden reitittimen palomuuriasetuksissa. Todennäköistä on, että portti 1194 jota OpenVPN:mme käyttää on suljettu. 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 28.2.2018
-
 
 ## Ubuntu Server 16.04 ja OpenVPN asennus ja konfigurointi
 
@@ -621,9 +494,7 @@ https://docs.google.com/document/d/1igediP5VD2BkQAikhPsEWrMBsLqCjeY67fdopYqZ_Sg/
 
 Kun saimme kaiken server -koneen puolelta kuntoon päätimme nyt asentaa client ohjelmistot normaalille xubuntu läppärille ja android pohjaiselle älypuhelimelle. Siirsimme ennen asennusta luomamme “client1.ovpn” tiedoston tietokoneelle ja älypuhelimille joita halusimme käyttää client koneina.
 
-
-Linux asennus
-
+### Linux asennus
 
 Ensiksi asensimme Client konfiguraatiot Xubuntu:lle komennoilla:
 
@@ -653,14 +524,7 @@ sudo openvpn --config client1.ovpn
 
 Yhdistäminen onnistui normaalisti.
 
-
-
-
-
-
-
-Android asennus
-
+### Android asennus
 
 Koska meillä sattui olemaan älypuhelimia käytössä päätimme vielä loppuun kokeilla jos saisimme otettua yhteyden myös niistä.
 
@@ -670,28 +534,10 @@ Tämän jälkeen käynnistimme sovelluksen. Sovelluksessa oli mahdollista ottaa 
 Lopetimme tältä erää tähän ja jätimme serverin pyörimään servulaan.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 14.3.2018
 
 ## Luodaan uusi client tiedosto
+
 
 Portti 1194/udp on nyt auki liikenteelle, mikä tarkoittaa että meidän Ubuntu Server voi nyt ottaa yhteyden internetiin. Tässä vaiheessa pystymme ottamaan salatun yhteyden VPN serveriin. Seuraavaksi asennettiin “tcp dump” -ohjelma, jotta voimme seurata ip -pakettien liikennettä.
 
@@ -729,9 +575,7 @@ Seuraavaksi päivitimme “server cache” -kohdan jotta voimme yhdistää kanne
 
 Saimme yhdistettyä server -koneen kannettavan kanssa ja yhdistimme myös älypuhelimen kannettavalle. Siirrettiin uusi client tiedosto onnistuneesti kännykälle. Voimme nyt ottaa yhteyden VPN -serveriin mobiiliverkosta myös.      
 
-
-VPN:n testaaminen
-
+### VPN:n testaaminen
 
 Vaatimukset:
 
@@ -774,25 +618,7 @@ Nykyiset “client” -tiedostot:
 client1.ovpn  client2.ovpn  harto.ovpn
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 11.4.2018
-
 
 ## LDAP testausta
 
@@ -811,9 +637,7 @@ Seuraavaksi asennetaan LDAP:
 sudo apt-get update
 sudo apt-get -y install slapd ldap-utils
 
-
-Konfiguroidaan LDAP
-
+### Konfiguroidaan LDAP
 
 Asennuksen jälkeen tekemämme konfiguraatiot:
 
@@ -843,9 +667,7 @@ Asennuksen jälkeen tulee verifioida LDAP:
 
 sudo netstat -antup | grep -i 389
 
-
-LDAP domain konfiguraatio
-
+### LDAP domain konfiguraatio
 
 Generoidaan “base.ldif” -tiedosto domainille:
 
@@ -864,9 +686,7 @@ ldapadd -x -W -D “cn=admin,dc=ldaptest,dc=local” -f base.ldif
 
 Anna LDAP salasana.
 
-
-Lisätään LDAP käyttäjiä
-
+### Lisätään LDAP käyttäjiä
 
 Luodaan uusi LDIF käyttäjätiedosto uudelle käyttäjälle “ldapuser”:
 
@@ -926,11 +746,11 @@ Asennuksen jälkeen lisäsimme serverin ip -osoitteen ja porttinumeron kun niit�
 Näiden alkuasetusten jälkeen me muokkasimme seuraavaa tiedostoa:
 sudo nano /etc/nsswitch.conf
 Muokkausten jälkeen se näytti tältä:
-# /etc/nsswitch.conf
-#
-# Example configuration of GNU Name Service Switch functionality.
-# If you have the `glibc-doc-reference' and `info' packages installed, try:
-# `info libc "Name Service Switch"' for information about this file.
+#/etc/nsswitch.conf  
+#  
+#Example configuration of GNU Name Service Switch functionality.
+#If you have the `glibc-doc-reference` and `info` packages installed, try:
+#`info libc "Name Service Switch"` for information about this file.
 passwd:         compat ldap
 group:             compat ldap
 shadow:          compat ldap
@@ -947,16 +767,7 @@ sudo service nscd restart
 Asennuksen jälkeen kokeilimme kirjautua server -koneeseen vasta tehdyllä käyttäjällä mutta se ei valitettavasti toiminut.
 
 
-
-
-
-
-
-
-
-
 20.4.2018
-
 
 ## LDAP virtuaaliympäristössä
 
@@ -967,7 +778,7 @@ https://blogs.msdn.microsoft.com/microsoftrservertigerteam/2017/04/10/step-by-st
 
 Luodaan virtuaalikone ja asennetaan siihen Windows Server 2016. Tämä tulee toimimaan LDAP -serverinä meidän OpenVPN -palvelun jatkona. Tässä serverissä tulee siis olemaan kirjautumistiedot joilla voidaan kirjautua OpenVPN -palveluun. OpenVPN -serveri tulee tarkistamaan nämä kirjautumistiedot ja päättää mitkä käyttäjät se voi päästää VPN -palveluun ja mitä oikeuksia heillä on. Tähän me käytimme Oracle VirtualBox -ohjelmaa. Tämän testin tarkoitus on kokeilla kuinka tämä toimii käytännön olosuhteissa. Me latasimme Microsoftin sivulta “evaluation” ISO -kuvakkeen joka on ilmainen. Asennuksen yhteydessä valittiin GUI jotta serverin käyttö olisi helpompaa.      
 
-Asennetaan LDAPS Windows Server 2016
+### Asennetaan LDAPS Windows Server 2016
 
 Me seurasimme linkin ohjeita. Ensiksi tuli valita AD LDS -rooli. Tämän jälkeen me loimme AD LDS instanssin uudestaan Server Manager -ohjelmalla. Me seurasimme ohjeita paitsi kohdassa “importing LDIF files” jossa me valittiin kaikki vaihtoehdot.
 
@@ -993,18 +804,7 @@ Varmistuakseemme että aikaisempi OpenLDAP -asennus meidän VPN -serverillä ei 
 Poistettiin vanhat OpenLDAP tiedostot.
 
 
-
-
-
-
-
-
-
-
-
-
 25.4.2018
-
 
 ## Serverin käyttäjien yhteys -lokien tarkastelua 
 
@@ -1013,28 +813,19 @@ Komennolla sudo “cat /etc/openvpn/openvpn-status.log” pääsee tarkastelemaa
 
 Huomasimme, että mikäli yksi laite on yhdistetty ensin käyttäen “client1” tiedostoa ja sen jälkeen toinen laite ottaa yhteyden käyttämällä samaa tiedostoa, näyttää loki ainoastaan jälkimmäisenä muodostetun yhteyden. VPN -yhteys ei kuitenkaan katkea ensimmäisen yhteyden muodostaneen laitteen ja serverin välillä. Se ei vain näy taulukossa. Eli tietoturvallisesti katsoen jokaiselle käyttäjälle tulisi luoda oma käyttäjätiedosto yhteyden muodostamista varten.
 
-
-OPENVPN serverin uudelleenluonti uudelle “Tuotantokoneelle” 
-
+### OPENVPN serverin uudelleenluonti uudelle “Tuotantokoneelle” 
 
 Tällä kertaa päivän tehtävissä oli asentaa aikaisemmin tekemämme toimiva OpenVPN -server toiselle koneelle jonne projekti tulee jäämään kurssin loppuessa talteen.
 Meille oli valmiiksi luotu instanssi joka sisälsi Ubuntu 16.0.4 LTS serverin pohjana.
 Aloimme aikaisemmin luomien ohjeiden perusteella asentamaan ja konfiguroimaan OpenVPN -palvelua normaalisti ja kaikki toimi ohjeiden mukaan. Ensimmäinen virhe oli tiedostoissa olevissa default asetuksissa. Meidän täytyi muuttaa ne osoittamaan luotuihin tiedostoihin. 
 
-
-Virhe käynnistäessä VPN palvelua
-
+### Virhe käynnistäessä VPN palvelua
 
 Yritimme käynnistää OpenVPN:n: 
 
 sudo systemctl start openvpn@VPNSERVER
 
 Saimme tämän virheilmoituksen: 
-
-
-
-
-
 
 Seuraavalla komennolla saa lisätietoja virheestä.
 
@@ -1051,15 +842,7 @@ sudo systemctl status openvpn@VPNSERVER
 Saimme kuitenkin tiedon että palvelu ei ollut käynnistynyt oikein. Kyseessä oli kirjoitusvirhe. Annettua oikean komennon huomasimme että kaikki on toiminnassa. 
 
 
-
-
-
-
-
-
-
 2.5.2018
-
 
 ## Windows Server 2016 asennus
 
