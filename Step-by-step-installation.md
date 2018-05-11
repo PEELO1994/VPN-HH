@@ -209,16 +209,16 @@ If everything went well, your output should look something that looks like this:
    	CGroup: /system.slice/system-openvpn.slice/openvpn@VPNSERVER.service
            └─1286 /usr/sbin/openvpn --daemon ovpn-VPNSERVER --status /run/openvp
 
-	May 02 11:53:33 Open-VPN-server ovpn-VPNSERVER[1286]: 172.28.171.92:55268 Data C
-	May 02 11:53:33 Open-VPN-server ovpn-VPNSERVER[1286]: 172.28.171.92:55268 Data C
-	May 02 11:53:33 Open-VPN-server ovpn-VPNSERVER[1286]: 172.28.171.92:55268 Contro
-	May 02 11:53:33 Open-VPN-server ovpn-VPNSERVER[1286]: 172.28.171.92:55268 [harto
-	May 02 11:53:33 Open-VPN-server ovpn-VPNSERVER[1286]: harto/172.28.171.92:55268
-	May 02 11:53:33 Open-VPN-server ovpn-VPNSERVER[1286]: harto/172.28.171.92:55268
-	May 02 11:53:33 Open-VPN-server ovpn-VPNSERVER[1286]: harto/172.28.171.92:55268
-	May 02 11:53:36 Open-VPN-server ovpn-VPNSERVER[1286]: harto/172.28.171.92:55268
-	May 02 11:53:36 Open-VPN-server ovpn-VPNSERVER[1286]: harto/172.28.171.92:55268
-	May 02 11:53:36 Open-VPN-server ovpn-VPNSERVER[1286]: harto/172.28.171.92:55268
+	May 02 11:53:33 Open-VPN-server ovpn-VPNSERVER[1286]: xxx.xxx.xxx.xxx Data C
+	May 02 11:53:33 Open-VPN-server ovpn-VPNSERVER[1286]: xxx.xxx.xxx.xxx:55268 Data C
+	May 02 11:53:33 Open-VPN-server ovpn-VPNSERVER[1286]: xxx.xxx.xxx.xxx:55268 Contro
+	May 02 11:53:33 Open-VPN-server ovpn-VPNSERVER[1286]: xxx.xxx.xxx.xxx:55268 [harto
+	May 02 11:53:33 Open-VPN-server ovpn-VPNSERVER[1286]: harto/xxx.xxx.xxx.xxx:55268
+	May 02 11:53:33 Open-VPN-server ovpn-VPNSERVER[1286]: harto/xxx.xxx.xxx.xxx:55268
+	May 02 11:53:33 Open-VPN-server ovpn-VPNSERVER[1286]: harto/xxx.xxx.xxx.xxx:55268
+	May 02 11:53:36 Open-VPN-server ovpn-VPNSERVER[1286]: harto/xxx.xxx.xxx.xxx:55268
+	May 02 11:53:36 Open-VPN-server ovpn-VPNSERVER[1286]: harto/xxx.xxx.xxx.xxx:55268
+	May 02 11:53:36 Open-VPN-server ovpn-VPNSERVER[1286]: harto/xxx.xxx.xxx.xxx:55268
 	lines 1-21/21 (END)...skipping...
 
 After this we typed in this command, that will start the service automaticly when system boots:
@@ -335,6 +335,23 @@ The following command will allow you to edit the file in case of need:
 
     $sudo nano ~/client-configs/files/client1.ovpn
     
+## Creating more clients to server
+
+You can now create as much new clients to your server as you want with just few really easy commands:
+
+	./build-key-pass Client1 (insert here any name you want to use on your client, in this case we use Client1) 
+	
+Press enter for those questions that OpenVPN will ask you confirm. After the basic creeation questions there there comes question about adding some extra password security stuff just ask no to that. 
+
+After that go to client-configs directory
+	
+	cd ~/client-configs
+	
+In that directory give this command to finnish the client creation: 
+	
+	./make_config.sh client1
+	
+And just like that you have created new client to your server.
     
 ## Client Installation tutorials for different operating systems
 
