@@ -352,6 +352,14 @@ In that directory give this command to finnish the client creation:
 	./make_config.sh client1
 	
 And just like that you have created new client to your server.
+
+## Client connection monitoring
+
+You can investigate which clients are connected in your server with this command: 
+
+	cat /etc/openvpn/openvpn-status.log
+
+
     
 ## Client Installation tutorials for different operating systems
 
